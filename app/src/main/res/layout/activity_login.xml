@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/colorPrimaryDark"
+    tools:context=".Login">
+
+    <TextView
+        android:id="@+id/textAppName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="100dp"
+        android:layout_marginTop="100dp"
+        android:layout_marginEnd="100dp"
+        android:layout_marginBottom="712dp"
+        android:fontFamily="serif"
+        android:text="Info Share"
+        android:textAlignment="center"
+        android:textColor="@color/white"
+        android:textSize="36sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.459" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="600dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textAppName"
+        android:orientation="vertical"
+        android:padding="20dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/maven_pro_bold"
+            android:text="Login"
+            android:textColor="@color/white"
+            android:textSize="26sp" />
+
+        <EditText
+            android:id="@+id/editTextTextEmailAddress"
+            android:layout_marginTop="50dp"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:inputType="textEmailAddress"
+            android:textColorHint="@color/colorPrimary"
+            android:padding="10dp"
+            android:background="@drawable/rounded_button"
+            android:ems="10"
+            android:hint="email"/>
+
+        <EditText
+            android:id="@+id/editTextTextPassword"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:hint="password"
+            android:padding="10dp"
+            android:textColorHint="@color/colorPrimary"
+            android:layout_marginTop="30dp"
+            android:background="@drawable/rounded_button"
+            android:ems="10"
+            android:inputType="textPassword" />
+        <Button
+            android:id="@+id/buttonLogin"
+            android:layout_width="150dp"
+            android:layout_height="40dp"
+            android:background="@drawable/rounded_button2"
+            android:text="LOGIN"
+            android:textColor="@color/white"
+            android:layout_marginTop="50dp"
+            android:layout_gravity="center"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="120dp"
+            android:layout_gravity="center"
+            android:layout_marginLeft="3dp"
+            android:textColor="@color/white"
+            android:text="New to Info Share ? "/>
+        <TextView
+            android:id="@+id/buttonRegister"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/cyan"
+            android:layout_marginTop="10dp"
+            android:text="Register Here"
+            android:layout_gravity="center"/>
+
+
+    </LinearLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
