@@ -49,7 +49,7 @@ public class Login extends AppCompatActivity {
         password = findViewById(R.id.editTextTextPassword);
         register = findViewById(R.id.buttonRegister);
         login = findViewById(R.id.buttonLogin);
-        //This is a comment
+
         firebaseAuth=FirebaseAuth.getInstance();
         databaseReference= FirebaseDatabase.getInstance().getReference().child("users-list");
 
