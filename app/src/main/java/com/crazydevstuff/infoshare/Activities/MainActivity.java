@@ -5,9 +5,9 @@ import androidx.fragment.app.Fragment;
 
 import android.os.Bundle;
 
-import com.crazydevstuff.infoshare.FavFragment;
-import com.crazydevstuff.infoshare.HomeFragment;
-import com.crazydevstuff.infoshare.ProfileFragment;
+import com.crazydevstuff.infoshare.Fragments.FavFragment;
+import com.crazydevstuff.infoshare.Fragments.HomeFragment;
+import com.crazydevstuff.infoshare.Fragments.ProfileFragment;
 import com.crazydevstuff.infoshare.R;
 
 import com.ismaeldivita.chipnavigation.ChipNavigationBar;
