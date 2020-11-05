@@ -1,12 +1,14 @@
 package com.crazydevstuff.infoshare.Fragments;
 
 import android.os.Bundle;
-
 import androidx.fragment.app.Fragment;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.ImageView;
+import android.widget.RelativeLayout;
 
 import com.crazydevstuff.infoshare.R;
 
@@ -25,7 +27,6 @@ public class HomeFragment extends Fragment {
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
-
     public HomeFragment() {
         // Required empty public constructor
     }
