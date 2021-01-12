@@ -6,13 +6,37 @@ public class ProductModel {
     private String productName;
     private String productDescription;
     private Bitmap productImage;
-    private String seller;
+    private String sellerName;
+    private int productPrice;
+    private Bitmap sellerImage;
 
-    public ProductModel(String productName, String productDescription, Bitmap productImage, String seller) {
+    public ProductModel(){
+
+    }
+
+    public ProductModel(String productName, String productDescription, Bitmap productImage, String sellerName,int productPrice, Bitmap sellerImage) {
         this.productName = productName;
         this.productDescription = productDescription;
+        this.productPrice = productPrice;
         this.productImage = productImage;
-        this.seller = seller;
+        this.sellerName = sellerName;
+        this.sellerImage = sellerImage;
+    }
+
+    public int getProductPrice() {
+        return productPrice;
+    }
+
+    public void setProductPrice(int productPrice) {
+        this.productPrice = productPrice;
+    }
+
+    public Bitmap getSellerImage() {
+        return sellerImage;
+    }
+
+    public void setSellerImage(Bitmap sellerImage) {
+        this.sellerImage = sellerImage;
     }
 
     public String getProductName() {
@@ -27,8 +51,8 @@ public class ProductModel {
         return productImage;
     }
 
-    public String getSeller() {
-        return seller;
+    public String getSellerName() {
+        return sellerName;
     }
 
     public void setProductName(String productName) {
@@ -43,7 +67,7 @@ public class ProductModel {
         this.productImage = productImage;
     }
 
-    public void setSeller(String seller) {
-        this.seller = seller;
+    public void setSellerName(String sellerName) {
+        this.sellerName = sellerName;
     }
 }

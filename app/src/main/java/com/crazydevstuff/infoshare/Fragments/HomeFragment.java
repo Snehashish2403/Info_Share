@@ -1,7 +1,13 @@
 package com.crazydevstuff.infoshare.Fragments;
 
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
+
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,43 +16,53 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 
+import com.crazydevstuff.infoshare.Adapters.HomeProductsAdapter;
+import com.crazydevstuff.infoshare.Models.ProductModel;
 import com.crazydevstuff.infoshare.R;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class HomeFragment extends Fragment {
 
-
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
-
-    private String mParam1;
-    private String mParam2;
+    private RecyclerView productsRecyclerView;
+    private HomeProductsAdapter productsAdapter;
     public HomeFragment() {
         // Required empty public constructor
     }
 
-    public static HomeFragment newInstance(String param1, String param2) {
-        HomeFragment fragment = new HomeFragment();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
-        return fragment;
-    }
 
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-        }
-    }
-
+    @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+
+        View v = inflater.inflate(R.layout.fragment_home,container,false);
+        String des = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat";
+
+        ProductModel p1 = new ProductModel();
+        p1.setProductDescription(des);
+        p1.setProductImage(BitmapFactory.decodeResource(getResources(),R.raw.books));
+        p1.setProductName("Books");
+        p1.setProductPrice(2000);
+        p1.setSellerImage(BitmapFactory.decodeResource(getResources(),R.drawable.sellerpic));
+        p1.setSellerName("User_1");
+
+        List<ProductModel> productModelList = new ArrayList<>();
+        productModelList.add(p1);
+        productModelList.add(p1);
+        productModelList.add(p1);
+        productModelList.add(p1);
+        productModelList.add(p1);
+        productModelList.add(p1);
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_home, container, false);
+        productsRecyclerView =(RecyclerView) v.findViewById(R.id.productsRV);
+        productsAdapter = new HomeProductsAdapter(productModelList,getContext());
+        productsRecyclerView.setAdapter(productsAdapter);
+
+        return v;
     }
+
+
+
 }
