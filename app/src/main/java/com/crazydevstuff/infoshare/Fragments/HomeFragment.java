@@ -53,11 +53,15 @@ public class HomeFragment extends Fragment {
         String item="https://www.imindq.com/Portals/0/EasyDNNNews/273/950600p488EDNmainimg-book-mind-mapping.jpg";
         String seller="https://srmrc.nihr.ac.uk/wp-content/uploads/female-placeholder.jpg";
         ProductModel p1 = new ProductModel("Books",des,item,"User_1",2000,seller);
+        ProductModel p2 = new ProductModel("Books",des,item,"User_2",5000,seller);
 
         productsAdapter = new HomeProductsAdapter();
         productViewModel=new ViewModelProvider.AndroidViewModelFactory(getActivity().getApplication()).create(ProductViewModel.class);
         productViewModel.deleteAllCache();
         productViewModel.addCache(p1);
+        productViewModel.addCache(p2);
+        productViewModel.addCache(p1);
+        productViewModel.addCache(p2);
         productViewModel.getAllCachedProducts().observe(getViewLifecycleOwner(), new Observer<List<ProductModel>>() {
             @Override
             public void onChanged(List<ProductModel> productModels) {
