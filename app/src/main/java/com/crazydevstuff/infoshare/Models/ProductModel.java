@@ -3,19 +3,27 @@ package com.crazydevstuff.infoshare.Models;
 import android.content.Intent;
 import android.graphics.Bitmap;
 
+import androidx.room.Entity;
+import androidx.room.Ignore;
+import androidx.room.PrimaryKey;
+
+@Entity(tableName = "saved_products")
 public class ProductModel {
+    @PrimaryKey(autoGenerate = true)
+    private int id;
     private String productName;
+    
     private String productDescription;
-    private Bitmap productImage;
+
+    private String productImage;
+
     private String sellerName;
+
     private Integer productPrice;
-    private Bitmap sellerImage;
 
-    public ProductModel(){
+    private String sellerImage;
 
-    }
-
-    public ProductModel(String productName, String productDescription, Bitmap productImage, String sellerName,Integer productPrice, Bitmap sellerImage) {
+    public ProductModel(String productName, String productDescription, String productImage, String sellerName,Integer productPrice, String sellerImage) {
         this.productName = productName;
         this.productDescription = productDescription;
         this.productPrice = productPrice;
@@ -28,16 +36,16 @@ public class ProductModel {
         return productPrice;
     }
 
-    public void setProductPrice(int productPrice) {
-        this.productPrice = productPrice;
+    public void setId(int id){
+        this.id=id;
     }
 
-    public Bitmap getSellerImage() {
+    public int getId(){
+        return id;
+    }
+
+    public String getSellerImage() {
         return sellerImage;
-    }
-
-    public void setSellerImage(Bitmap sellerImage) {
-        this.sellerImage = sellerImage;
     }
 
     public String getProductName() {
@@ -48,7 +56,7 @@ public class ProductModel {
         return productDescription;
     }
 
-    public Bitmap getProductImage() {
+    public String getProductImage() {
         return productImage;
     }
 
@@ -56,19 +64,4 @@ public class ProductModel {
         return sellerName;
     }
 
-    public void setProductName(String productName) {
-        this.productName = productName;
-    }
-
-    public void setProductDescription(String productDescription) {
-        this.productDescription = productDescription;
-    }
-
-    public void setProductImage(Bitmap productImage) {
-        this.productImage = productImage;
-    }
-
-    public void setSellerName(String sellerName) {
-        this.sellerName = sellerName;
-    }
 }
