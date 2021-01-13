@@ -23,12 +23,13 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal">
+
                 <ImageView
                     android:id="@+id/prod_sellerIV"
                     android:layout_width="50dp"
                     android:layout_height="50dp"
-                    android:src="@drawable/sellerpic"
-                    android:layout_marginEnd="5dp"/>
+                    android:layout_marginTop="5dp"/>
+
                 <TextView
                     android:id="@+id/prod_sellerNameTV"
                     android:layout_width="match_parent"
