@@ -1,5 +1,6 @@
 package com.crazydevstuff.infoshare.Models;
 
+import android.content.Intent;
 import android.graphics.Bitmap;
 
 public class ProductModel {
@@ -7,14 +8,14 @@ public class ProductModel {
     private String productDescription;
     private Bitmap productImage;
     private String sellerName;
-    private int productPrice;
+    private Integer productPrice;
     private Bitmap sellerImage;
 
     public ProductModel(){
 
     }
 
-    public ProductModel(String productName, String productDescription, Bitmap productImage, String sellerName,int productPrice, Bitmap sellerImage) {
+    public ProductModel(String productName, String productDescription, Bitmap productImage, String sellerName,Integer productPrice, Bitmap sellerImage) {
         this.productName = productName;
         this.productDescription = productDescription;
         this.productPrice = productPrice;
@@ -23,7 +24,7 @@ public class ProductModel {
         this.sellerImage = sellerImage;
     }
 
-    public int getProductPrice() {
+    public Integer getProductPrice() {
         return productPrice;
     }
 

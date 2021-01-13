@@ -40,13 +40,7 @@ public class HomeFragment extends Fragment {
         View v = inflater.inflate(R.layout.fragment_home,container,false);
         String des = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat";
 
-        ProductModel p1 = new ProductModel();
-        p1.setProductDescription(des);
-        p1.setProductImage(BitmapFactory.decodeResource(getResources(),R.raw.books));
-        p1.setProductName("Books");
-        p1.setProductPrice(2000);
-        p1.setSellerImage(BitmapFactory.decodeResource(getResources(),R.drawable.sellerpic));
-        p1.setSellerName("User_1");
+        ProductModel p1 = new ProductModel("Books",des,BitmapFactory.decodeResource(getResources(),R.raw.books),"User_1",2000,BitmapFactory.decodeResource(getResources(),R.drawable.sellerpic));
 
         List<ProductModel> productModelList = new ArrayList<>();
         productModelList.add(p1);
@@ -58,6 +52,8 @@ public class HomeFragment extends Fragment {
         // Inflate the layout for this fragment
         productsRecyclerView =(RecyclerView) v.findViewById(R.id.productsRV);
         productsAdapter = new HomeProductsAdapter(productModelList,getContext());
+        productsRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+        productsRecyclerView.setHasFixedSize(true);
         productsRecyclerView.setAdapter(productsAdapter);
 
         return v;

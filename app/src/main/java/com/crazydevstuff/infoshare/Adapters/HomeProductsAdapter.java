@@ -22,6 +22,7 @@ public class HomeProductsAdapter extends RecyclerView.Adapter<HomeProductsAdapte
     public HomeProductsAdapter(List<ProductModel> productModelList, Context context) {
         this.productModelList = productModelList;
         this.context = context;
+        notifyDataSetChanged();
     }
 
     @NonNull
@@ -33,7 +34,7 @@ public class HomeProductsAdapter extends RecyclerView.Adapter<HomeProductsAdapte
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        holder.price.setText(productModelList.get(position).getProductPrice());
+        holder.price.setText(productModelList.get(position).getProductPrice().toString());
         holder.productDesc.setText(productModelList.get(position).getProductDescription());
         holder.productName.setText(productModelList.get(position).getProductName());
         holder.sellerName.setText(productModelList.get(position).getSellerName());
@@ -47,7 +48,6 @@ public class HomeProductsAdapter extends RecyclerView.Adapter<HomeProductsAdapte
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder{
-
         ImageView sellerImage;
         TextView sellerName;
         ImageView item;
