@@ -12,18 +12,13 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.crazydevstuff.infoshare.Models.ProductModel;
 import com.crazydevstuff.infoshare.R;
+import com.squareup.picasso.Picasso;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class HomeProductsAdapter extends RecyclerView.Adapter<HomeProductsAdapter.ViewHolder> {
-    private List<ProductModel> productModelList;
-    private Context context;
-
-    public HomeProductsAdapter(List<ProductModel> productModelList, Context context) {
-        this.productModelList = productModelList;
-        this.context = context;
-        notifyDataSetChanged();
-    }
+    private List<ProductModel> productModelList=new ArrayList<>();
 
     @NonNull
     @Override
@@ -38,15 +33,24 @@ public class HomeProductsAdapter extends RecyclerView.Adapter<HomeProductsAdapte
         holder.productDesc.setText(productModelList.get(position).getProductDescription());
         holder.productName.setText(productModelList.get(position).getProductName());
         holder.sellerName.setText(productModelList.get(position).getSellerName());
-        holder.sellerImage.setImageBitmap(productModelList.get(position).getSellerImage());
-        holder.item.setImageBitmap(productModelList.get(position).getProductImage());
-    }
+        Picasso.get().load(productModelList.get(position).getSellerImage())
+                .fit()
+                .centerInside()
+                .into(holder.sellerImage);
+        Picasso.get().load(productModelList.get(position).getProductImage())
+                .fit()
+                .centerInside()
+                .into(holder.item);    }
 
     @Override
     public int getItemCount() {
         return productModelList.size();
     }
 
+    public void setProductModelList(List<ProductModel> list){
+        this.productModelList=list;
+        notifyDataSetChanged();
+    }
     public class ViewHolder extends RecyclerView.ViewHolder{
         ImageView sellerImage;
         TextView sellerName;

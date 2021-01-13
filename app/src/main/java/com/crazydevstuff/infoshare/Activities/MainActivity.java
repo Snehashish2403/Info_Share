@@ -2,6 +2,7 @@ package com.crazydevstuff.infoshare.Activities;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProvider;
 
 import android.os.Bundle;
 import android.widget.FrameLayout;
@@ -9,8 +10,10 @@ import android.widget.FrameLayout;
 import com.crazydevstuff.infoshare.Fragments.FavFragment;
 import com.crazydevstuff.infoshare.Fragments.HomeFragment;
 import com.crazydevstuff.infoshare.Fragments.ProfileFragment;
+import com.crazydevstuff.infoshare.Models.ProductModel;
 import com.crazydevstuff.infoshare.R;
 
+import com.crazydevstuff.infoshare.ViewModel.ProductViewModel;
 import com.ismaeldivita.chipnavigation.ChipNavigationBar;
 
 public class MainActivity extends AppCompatActivity {
@@ -24,6 +27,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         navigationBar = findViewById(R.id.bottomNavigationView);
         container = findViewById(R.id.container);
+
         navigationBar.setOnItemSelectedListener(new ChipNavigationBar.OnItemSelectedListener() {
             @Override
             public void onItemSelected(int i) {
@@ -41,9 +45,9 @@ public class MainActivity extends AppCompatActivity {
                         fragment = null;
                         break;
                 }
-
-                    getSupportFragmentManager().beginTransaction().replace(R.id.container,fragment).commit();
+                getSupportFragmentManager().beginTransaction().replace(R.id.container,fragment).commit();
             }
         });
+        getSupportFragmentManager().beginTransaction().replace(R.id.container,new HomeFragment()).commit();
     }
 }
