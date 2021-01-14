@@ -2,6 +2,7 @@ package com.crazydevstuff.infoshare.Fragments;
 
 import android.app.Application;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
@@ -22,10 +23,12 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 
+import com.crazydevstuff.infoshare.Activities.MakeProduct;
 import com.crazydevstuff.infoshare.Adapters.HomeProductsAdapter;
 import com.crazydevstuff.infoshare.Models.ProductModel;
 import com.crazydevstuff.infoshare.R;
 import com.crazydevstuff.infoshare.ViewModel.ProductViewModel;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -35,6 +38,7 @@ public class HomeFragment extends Fragment {
     private RecyclerView productsRecyclerView;
     private HomeProductsAdapter productsAdapter;
     private ProductViewModel productViewModel;
+    private FloatingActionButton fab;
     public HomeFragment() {
         // Required empty public constructor
     }
@@ -48,6 +52,7 @@ public class HomeFragment extends Fragment {
         View v = inflater.inflate(R.layout.fragment_home,container,false);
 
         productsRecyclerView =(RecyclerView) v.findViewById(R.id.productsRV);
+        fab = v.findViewById(R.id.fab);
 
         String des = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat";
         String item="https://www.imindq.com/Portals/0/EasyDNNNews/273/950600p488EDNmainimg-book-mind-mapping.jpg";
@@ -71,6 +76,14 @@ public class HomeFragment extends Fragment {
         productsRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         productsRecyclerView.setHasFixedSize(true);
         productsRecyclerView.setAdapter(productsAdapter);
+
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(getContext(), MakeProduct.class));
+
+            }
+        });
         return v;
     }
 

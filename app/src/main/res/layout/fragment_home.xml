@@ -7,11 +7,12 @@
     tools:context=".Fragments.HomeFragment">
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/fab"
+        android:backgroundTint="@color/colorAccent"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentEnd="true"
         android:layout_alignParentBottom="true"
-        app:rippleColor="@color/cyan"
+        app:rippleColor="@color/white"
         android:src="@drawable/add_fab"
         android:layout_margin="20dp" />
 
