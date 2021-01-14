@@ -15,7 +15,10 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical"
-            android:padding="30dp">
+            android:paddingStart="30dp"
+            android:paddingLeft="30dp"
+            android:paddingRight="30dp"
+            android:paddingTop="30dp">
             <androidx.cardview.widget.CardView
                 android:layout_width="300dp"
                 android:layout_height="200dp"
@@ -92,6 +95,27 @@
                 android:text="Log Out"
                 android:textColor="@color/white"
                 />
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <TextView
+                    android:id="@+id/your_itemsTV"
+                    android:layout_marginTop="20dp"
+                    android:text="Your Items"
+                    android:textSize="26sp"
+                    android:textColor="@color/white"
+                    android:fontFamily="@font/maven_pro_bold"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"/>
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/yourItemsRV"
+                    android:layout_marginTop="10dp"
+                    android:layout_width="match_parent"
+                    android:layout_below="@+id/your_itemsTV"
+                    android:layout_height="match_parent"/>
+            </RelativeLayout>
+
         </LinearLayout>
     </RelativeLayout>
 
