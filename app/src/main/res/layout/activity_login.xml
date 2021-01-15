@@ -4,9 +4,16 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/loginbgr"
+    android:background="@color/colorPrimaryDark"
     tools:context=".Activities.Login">
 
+<com.airbnb.lottie.LottieAnimationView
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    app:lottie_autoPlay="true"
+    app:lottie_rawRes="@raw/bgranim"
+    app:lottie_loop="true"
+    android:scaleType="centerCrop"/>
 
     <TextView
         android:id="@+id/textAppName"

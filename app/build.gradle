@@ -22,6 +22,7 @@ android {
 dependencies {
     def lifecycle_version = "2.2.0"
     def room_version = "2.2.5"
+    def lottieVersion = "3.6.0"
     implementation "com.google.android.material:material:1.2.0"
 // ViewModel
     implementation "androidx.lifecycle:lifecycle-viewmodel:$lifecycle_version"
@@ -33,6 +34,10 @@ dependencies {
 // Room
     implementation "androidx.room:room-runtime:$room_version"
     annotationProcessor "androidx.room:room-compiler:$room_version"
+
+    //Lottie
+    implementation "com.airbnb.android:lottie:$lottieVersion"
+
 
     implementation 'com.squareup.picasso:picasso:2.71828'
     annotationProcessor "androidx.room:room-compiler:$room_version"
