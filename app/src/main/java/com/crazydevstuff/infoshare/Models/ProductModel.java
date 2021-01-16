@@ -23,6 +23,10 @@ public class ProductModel {
 
     private String sellerImage;
 
+    public ProductModel(){
+
+    }
+
     public ProductModel(String productName, String productDescription, String productImage, String sellerName,Integer productPrice, String sellerImage) {
         this.productName = productName;
         this.productDescription = productDescription;
@@ -64,4 +68,27 @@ public class ProductModel {
         return sellerName;
     }
 
+    public void setProductName(String productName) {
+        this.productName = productName;
+    }
+
+    public void setProductDescription(String productDescription) {
+        this.productDescription = productDescription;
+    }
+
+    public void setProductImage(String productImage) {
+        this.productImage = productImage;
+    }
+
+    public void setSellerName(String sellerName) {
+        this.sellerName = sellerName;
+    }
+
+    public void setProductPrice(Integer productPrice) {
+        this.productPrice = productPrice;
+    }
+
+    public void setSellerImage(String sellerImage) {
+        this.sellerImage = sellerImage;
+    }
 }

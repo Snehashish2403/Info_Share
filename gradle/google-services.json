@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "21694794902",
+    "firebase_url": "https://info-share-df839.firebaseio.com",
+    "project_id": "info-share-df839",
+    "storage_bucket": "info-share-df839.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:21694794902:android:07591b35ac408fdc7d46b7",
+        "android_client_info": {
+          "package_name": "com.crazydevstuff.infoshare"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "21694794902-f2qqippdohf2gct3qh9llsb8nvs1g13p.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBOoXMtd3CwiidcxuF0NMNXvxsvH-7YXVU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "21694794902-f2qqippdohf2gct3qh9llsb8nvs1g13p.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
