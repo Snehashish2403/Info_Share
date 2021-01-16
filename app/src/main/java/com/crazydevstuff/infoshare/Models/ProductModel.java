@@ -23,17 +23,20 @@ public class ProductModel {
 
     private String sellerImage;
 
+    private String sellerEmail;
+
     public ProductModel(){
 
     }
 
-    public ProductModel(String productName, String productDescription, String productImage, String sellerName,Integer productPrice, String sellerImage) {
+    public ProductModel(String productName, String productDescription, String productImage, String sellerName,Integer productPrice, String sellerImage,String sellerEmail) {
         this.productName = productName;
         this.productDescription = productDescription;
         this.productPrice = productPrice;
         this.productImage = productImage;
         this.sellerName = sellerName;
         this.sellerImage = sellerImage;
+        this.sellerEmail = sellerEmail;
     }
 
     public Integer getProductPrice() {
@@ -66,6 +69,14 @@ public class ProductModel {
 
     public String getSellerName() {
         return sellerName;
+    }
+
+    public String getSellerEmail() {
+        return sellerEmail;
+    }
+
+    public void setSellerEmail(String sellerEmail) {
+        this.sellerEmail = sellerEmail;
     }
 
     public void setProductName(String productName) {

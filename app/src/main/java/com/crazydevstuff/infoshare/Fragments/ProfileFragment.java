@@ -16,20 +16,25 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.crazydevstuff.infoshare.Activities.Login;
+import com.crazydevstuff.infoshare.Activities.MainActivity;
 import com.crazydevstuff.infoshare.Adapters.HomeProductsAdapter;
+import com.crazydevstuff.infoshare.Adapters.RecentItemsAdapter;
 import com.crazydevstuff.infoshare.Models.ProductModel;
 import com.crazydevstuff.infoshare.Models.RegisterModel;
 import com.crazydevstuff.infoshare.R;
 import com.crazydevstuff.infoshare.ViewModel.ProductViewModel;
+import com.firebase.ui.database.FirebaseRecyclerOptions;
 import com.google.android.material.button.MaterialButton;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 import com.squareup.picasso.Picasso;
 
@@ -48,7 +53,7 @@ public class ProfileFragment extends Fragment {
     private DatabaseReference reference;
     private RegisterModel model;
     private RecyclerView productsRecyclerView;
-    private HomeProductsAdapter productsAdapter;
+    private RecentItemsAdapter recentItemsAdapter;
     private ProductViewModel productViewModel;
 
     public ProfileFragment() {
@@ -65,6 +70,7 @@ public class ProfileFragment extends Fragment {
         profileNameTV = v.findViewById(R.id.user_profileNameTV);
         profileNumberTV = v.findViewById(R.id.user_profileNumberTV);
         logOutButton = v.findViewById(R.id.logOutButton);
+        firebaseAuth = FirebaseAuth.getInstance();
         reference = FirebaseDatabase.getInstance().getReference();
         productsRecyclerView = v.findViewById(R.id.yourItemsRV);
         firebaseAuth = FirebaseAuth.getInstance();
@@ -76,29 +82,7 @@ public class ProfileFragment extends Fragment {
         });
 
         setInfo();
-
-        String des = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat";
-        String item="https://www.imindq.com/Portals/0/EasyDNNNews/273/950600p488EDNmainimg-book-mind-mapping.jpg";
-        String seller="https://srmrc.nihr.ac.uk/wp-content/uploads/female-placeholder.jpg";
-        ProductModel p1 = new ProductModel("Books",des,item,"User_1",2000,seller);
-        ProductModel p2 = new ProductModel("Books",des,item,"User_2",5000,seller);
-
-        productsAdapter = new HomeProductsAdapter();
-        productViewModel=new ViewModelProvider.AndroidViewModelFactory(getActivity().getApplication()).create(ProductViewModel.class);
-        productViewModel.deleteAllCache();
-        productViewModel.addCache(p1);
-        productViewModel.addCache(p2);
-        productViewModel.addCache(p1);
-        productViewModel.addCache(p2);
-        productViewModel.getAllCachedProducts().observe(getViewLifecycleOwner(), new Observer<List<ProductModel>>() {
-            @Override
-            public void onChanged(List<ProductModel> productModels) {
-                productsAdapter.setProductModelList(productModels);
-            }
-        });
-        productsRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-        productsRecyclerView.setHasFixedSize(true);
-        productsRecyclerView.setAdapter(productsAdapter);
+        getRecentItems();
         return v;
     }
     private void logOut(){
@@ -113,20 +97,27 @@ public class ProfileFragment extends Fragment {
                 .centerInside()
                 .into(profileImageIV);
         profileEmailTV.setText(Objects.requireNonNull(firebaseAuth.getCurrentUser()).getEmail());
-        reference.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
+    }
 
-                model = snapshot.getValue(RegisterModel.class);
-                assert model != null;
-                System.out.println(model.getName() + model.getEmail());
+   private void getRecentItems(){
+        String emailSeller = firebaseAuth.getCurrentUser().getEmail();
+        Query query = FirebaseDatabase.getInstance().getReference().child("uploads").orderByChild("sellerEmail").equalTo(emailSeller);
+        FirebaseRecyclerOptions<ProductModel> options = new FirebaseRecyclerOptions.Builder<ProductModel>().setQuery(query,ProductModel.class).build();
 
-            }
+        recentItemsAdapter = new RecentItemsAdapter(options);
+        productsRecyclerView.setAdapter(recentItemsAdapter);
+        productsRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+    }
 
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-                Log.w(TAG, "loadPost:onCancelled", error.toException());
-            }
-        });
+    @Override
+    public void onStart() {
+        super.onStart();
+        recentItemsAdapter.startListening();
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        recentItemsAdapter.stopListening();
     }
 }

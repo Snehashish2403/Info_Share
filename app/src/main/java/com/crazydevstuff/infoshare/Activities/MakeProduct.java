@@ -58,7 +58,7 @@ public class MakeProduct extends AppCompatActivity {
         getSupportActionBar().setCustomView(R.layout.custom_actionbar_sell_prod);
 
         tempIntent=getIntent();
-
+        firebaseAuth = FirebaseAuth.getInstance();
         itemDescription=findViewById(R.id.itemDescpET);
         itemName=findViewById(R.id.itemNameET);
         itemPrice=findViewById(R.id.itemPriceTV);
@@ -113,9 +113,11 @@ public class MakeProduct extends AppCompatActivity {
                                     String description=itemDescription.getText().toString();
                                     String price=itemPrice.getText().toString();
                                     String name=itemName.getText().toString();
-                                    ProductModel product=new ProductModel(name,description,imageURL,username,Integer.parseInt(price),seller);
+                                    String email = firebaseAuth.getCurrentUser().getEmail();
+                                    ProductModel product=new ProductModel(name,description,imageURL,username,Integer.parseInt(price),seller,email);
                                     String uploadId=databaseReference.push().getKey();
                                     databaseReference.child(uploadId).setValue(product);
+                                    finish();
                                 }
                             });
                         }
