@@ -1,6 +1,7 @@
 package com.crazydevstuff.infoshare.Fragments;
 
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -18,6 +19,7 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.crazydevstuff.infoshare.Activities.Login;
 import com.crazydevstuff.infoshare.Activities.MainActivity;
@@ -51,11 +53,8 @@ public class ProfileFragment extends Fragment {
     private FirebaseAuth firebaseAuth;
     private Button logOutButton;
     private DatabaseReference reference;
-    private RegisterModel model;
     private RecyclerView productsRecyclerView;
     private RecentItemsAdapter recentItemsAdapter;
-    private ProductViewModel productViewModel;
-
     public ProfileFragment() {
         // Required empty public constructor
     }
@@ -70,7 +69,6 @@ public class ProfileFragment extends Fragment {
         profileNameTV = v.findViewById(R.id.user_profileNameTV);
         profileNumberTV = v.findViewById(R.id.user_profileNumberTV);
         logOutButton = v.findViewById(R.id.logOutButton);
-        firebaseAuth = FirebaseAuth.getInstance();
         reference = FirebaseDatabase.getInstance().getReference();
         productsRecyclerView = v.findViewById(R.id.yourItemsRV);
         firebaseAuth = FirebaseAuth.getInstance();
@@ -96,7 +94,8 @@ public class ProfileFragment extends Fragment {
                 .fit()
                 .centerInside()
                 .into(profileImageIV);
-        profileEmailTV.setText(Objects.requireNonNull(firebaseAuth.getCurrentUser()).getEmail());
+        profileEmailTV.setText(firebaseAuth.getCurrentUser().getEmail());
+
     }
 
    private void getRecentItems(){
@@ -120,4 +119,6 @@ public class ProfileFragment extends Fragment {
         super.onStop();
         recentItemsAdapter.stopListening();
     }
+
+
 }

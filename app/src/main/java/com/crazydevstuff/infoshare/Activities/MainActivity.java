@@ -31,10 +31,13 @@ import java.util.Objects;
 
 public class MainActivity extends AppCompatActivity {
 
+
     public static String username;
     private ChipNavigationBar navigationBar ;
+    private FirebaseAuth firebaseAuth;
     private Fragment fragment;
     private FrameLayout container;
+    private DatabaseReference reference;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -62,5 +65,28 @@ public class MainActivity extends AppCompatActivity {
             }
         });
         getSupportFragmentManager().beginTransaction().replace(R.id.container,new HomeFragment()).commit();
+        getUserInfo();
+    }
+
+    private void getUserInfo(){
+        firebaseAuth = FirebaseAuth.getInstance();
+        reference = FirebaseDatabase.getInstance().getReference().child("users-list");
+        reference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                for(DataSnapshot dataSnapshot : snapshot.getChildren()){
+                    RegisterModel model = dataSnapshot.getValue(RegisterModel.class);
+                    if(model.getEmail().equals(firebaseAuth.getCurrentUser().getEmail()))
+                        username = model.getName();
+                    break;
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+
     }
 }

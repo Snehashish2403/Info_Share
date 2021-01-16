@@ -1,8 +1,8 @@
 package com.crazydevstuff.infoshare.Models;
 
 public class RegisterModel {
-    public String name;
-    public String email;
+    private String name;
+    private String email;
     public RegisterModel(){
 
     }
