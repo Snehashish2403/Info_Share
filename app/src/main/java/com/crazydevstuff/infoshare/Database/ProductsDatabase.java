@@ -16,7 +16,7 @@ public abstract class ProductsDatabase extends RoomDatabase {
 
     public static synchronized ProductsDatabase getInstance(Context context){
         if(instance==null){
-            instance= Room.databaseBuilder(context.getApplicationContext(),ProductsDatabase.class,"Info_Share")
+            instance= Room.databaseBuilder(context,ProductsDatabase.class,"Info_Share")
                     .fallbackToDestructiveMigration()
                     .build();
         }
