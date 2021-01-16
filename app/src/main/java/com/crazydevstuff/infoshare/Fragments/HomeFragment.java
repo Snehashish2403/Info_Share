@@ -23,12 +23,18 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 
+import com.crazydevstuff.infoshare.Activities.MainActivity;
 import com.crazydevstuff.infoshare.Activities.MakeProduct;
 import com.crazydevstuff.infoshare.Adapters.HomeProductsAdapter;
 import com.crazydevstuff.infoshare.Models.ProductModel;
 import com.crazydevstuff.infoshare.R;
 import com.crazydevstuff.infoshare.ViewModel.ProductViewModel;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -39,6 +45,10 @@ public class HomeFragment extends Fragment {
     private HomeProductsAdapter productsAdapter;
     private ProductViewModel productViewModel;
     private FloatingActionButton fab;
+    private DatabaseReference databaseReference;
+    private ValueEventListener databaseListener;
+    private List<ProductModel> fetchedProds=new ArrayList<>();
+
     public HomeFragment() {
         // Required empty public constructor
     }
@@ -53,23 +63,32 @@ public class HomeFragment extends Fragment {
 
         productsRecyclerView =(RecyclerView) v.findViewById(R.id.productsRV);
         fab = v.findViewById(R.id.fab);
-
-        String des = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat";
-        String item="https://www.imindq.com/Portals/0/EasyDNNNews/273/950600p488EDNmainimg-book-mind-mapping.jpg";
-        String seller="https://srmrc.nihr.ac.uk/wp-content/uploads/female-placeholder.jpg";
-        ProductModel p1 = new ProductModel("Books",des,item,"User_1",2000,seller);
-        ProductModel p2 = new ProductModel("Books",des,item,"User_2",5000,seller);
-
+        databaseReference= FirebaseDatabase.getInstance().getReference("uploads");
         productsAdapter = new HomeProductsAdapter();
         productViewModel=new ViewModelProvider.AndroidViewModelFactory(getActivity().getApplication()).create(ProductViewModel.class);
-        productViewModel.deleteAllCache();
-        productViewModel.addCache(p1);
-        productViewModel.addCache(p2);
-        productViewModel.addCache(p1);
-        productViewModel.addCache(p2);
+        databaseListener=databaseReference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                productViewModel.deleteAllCache();
+                fetchedProds.clear();
+                for(DataSnapshot postSnapShot:snapshot.getChildren()){
+                    ProductModel product=postSnapShot.getValue(ProductModel.class);
+                    fetchedProds.add(product);
+                }
+                for(ProductModel temp: fetchedProds){
+                    productViewModel.addCache(temp);
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
         productViewModel.getAllCachedProducts().observe(getViewLifecycleOwner(), new Observer<List<ProductModel>>() {
             @Override
             public void onChanged(List<ProductModel> productModels) {
+
                 productsAdapter.setProductModelList(productModels);
             }
         });
@@ -80,7 +99,10 @@ public class HomeFragment extends Fragment {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(getContext(), MakeProduct.class));
+                String username=MainActivity.username;
+                Intent intent=new Intent(getContext(),MakeProduct.class);
+                intent.putExtra("username",username);
+                startActivity(intent);
 
             }
         });
