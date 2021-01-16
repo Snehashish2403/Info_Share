@@ -88,5 +88,11 @@
         android:layout_height="40dp"
         android:text="Save"
         android:backgroundTint="@color/colorPrimaryDark"/>
+    <ProgressBar
+        android:id="@+id/progressBar"
+        android:layout_marginTop="10dp"
+        android:visibility="invisible"
+        android:layout_width="match_parent"
+        android:layout_height="3dp"/>
 </LinearLayout>
 </RelativeLayout>

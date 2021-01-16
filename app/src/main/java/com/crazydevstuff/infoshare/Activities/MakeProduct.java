@@ -100,6 +100,7 @@ public class MakeProduct extends AppCompatActivity {
                     .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                         @Override
                         public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                            progressBar.setVisibility(View.VISIBLE);
                             progressBar.setProgress(0);
                             Toast.makeText(MakeProduct.this,"Upload successful!",Toast.LENGTH_SHORT).show();
                             fileReference.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {

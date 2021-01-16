@@ -19,6 +19,7 @@ import com.ismaeldivita.chipnavigation.ChipNavigationBar;
 
 public class MainActivity extends AppCompatActivity {
 
+    public static String username;
     private ChipNavigationBar navigationBar ;
     private Fragment fragment;
     private FrameLayout container;
