@@ -10,6 +10,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.crazydevstuff.infoshare.Interfaces.RecentItemsAdapterActionListener;
 import com.crazydevstuff.infoshare.Models.ProductModel;
 import com.crazydevstuff.infoshare.R;
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
@@ -19,8 +20,10 @@ import com.squareup.picasso.Picasso;
 
 public class RecentItemsAdapter extends FirebaseRecyclerAdapter<ProductModel,RecentItemsAdapter.Holder> {
 
-    public RecentItemsAdapter(@NonNull FirebaseRecyclerOptions<ProductModel> options) {
+    private RecentItemsAdapterActionListener actionListener;
+    public RecentItemsAdapter(@NonNull FirebaseRecyclerOptions<ProductModel> options, RecentItemsAdapterActionListener actionListener) {
         super(options);
+        this.actionListener = actionListener;
     }
 
     @Override
@@ -44,6 +47,13 @@ public class RecentItemsAdapter extends FirebaseRecyclerAdapter<ProductModel,Rec
     @Override
     public Holder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.your_items_layout,parent,false);
+        final Holder holder = new Holder(view);
+        holder.deleteItem.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                actionListener.onViewClicked(v.getId(),holder.getAdapterPosition());
+            }
+        });
         return new Holder(view);
     }
 

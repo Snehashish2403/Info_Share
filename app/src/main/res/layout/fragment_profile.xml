@@ -29,12 +29,26 @@
                     android:orientation="vertical"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent">
-                    <de.hdodenhof.circleimageview.CircleImageView
-                        android:id="@+id/user_profileIV"
-                        android:layout_width="70dp"
-                        android:layout_height="70dp"
-                        android:layout_marginTop="16dp"
-                        android:layout_gravity="center_horizontal"/>
+                    <LinearLayout
+                        android:layout_marginStart="115dp"
+                        android:orientation="horizontal"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content">
+                        <de.hdodenhof.circleimageview.CircleImageView
+                            android:id="@+id/user_profileIV"
+                            android:layout_width="70dp"
+                            android:layout_height="70dp"
+                            android:layout_marginTop="16dp"/>
+                        <de.hdodenhof.circleimageview.CircleImageView
+                            android:id="@+id/chaneProfilePicIV"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:src="@drawable/change_pic_cam"
+                            android:layout_marginStart="20dp"
+                            android:layout_gravity="bottom"
+                            />
+                    </LinearLayout>
+
                     <TextView
                         android:id="@+id/user_profileNameTV"
                         android:layout_width="wrap_content"
