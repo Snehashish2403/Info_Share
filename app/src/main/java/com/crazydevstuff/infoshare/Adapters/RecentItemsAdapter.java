@@ -43,7 +43,7 @@ public class RecentItemsAdapter extends FirebaseRecyclerAdapter<ProductModel,Rec
     @NonNull
     @Override
     public Holder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.home_product_layout,parent,false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.your_items_layout,parent,false);
         return new Holder(view);
     }
 
@@ -54,13 +54,15 @@ public class RecentItemsAdapter extends FirebaseRecyclerAdapter<ProductModel,Rec
         TextView productName;
         TextView productDesc;
         TextView price;
+        ImageView deleteItem;
         public Holder (@NonNull View itemView) {
             super(itemView);
-            sellerImage = itemView.findViewById(R.id.prod_sellerIV);
-            sellerName = itemView.findViewById(R.id.prod_sellerNameTV);
-            item = itemView.findViewById(R.id.prod_imageIV);
-            productName = itemView.findViewById(R.id.prod_nameTV);
-            productDesc = itemView.findViewById(R.id.prod_descrpTv);
-            price = itemView.findViewById(R.id.prod_priceTV);
+            sellerImage = itemView.findViewById(R.id.yrItems_sellerImageIV);
+            sellerName = itemView.findViewById(R.id.yrItems_sellerNameTV);
+            item = itemView.findViewById(R.id.yrItems_itemImageIV);
+            productName = itemView.findViewById(R.id.yrItems_itemNameTV);
+            productDesc = itemView.findViewById(R.id.yrItems_itemDescTV);
+            price = itemView.findViewById(R.id.yrItems_itemPriceTV);
+            deleteItem = itemView.findViewById(R.id.delete_yourItemIV);
     }
 }}
