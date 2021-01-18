@@ -28,7 +28,7 @@ public class RecentItemsAdapter extends FirebaseRecyclerAdapter<ProductModel,Rec
 
     @Override
     protected void onBindViewHolder(@NonNull Holder holder, int position, @NonNull ProductModel model) {
-        holder.price.setText(model.getProductPrice().toString());
+        holder.price.setText("₹"+model.getProductPrice().toString());
         holder.productDesc.setText(model.getProductDescription());
         holder.productName.setText(model.getProductName());
         holder.sellerName.setText(model.getSellerName());

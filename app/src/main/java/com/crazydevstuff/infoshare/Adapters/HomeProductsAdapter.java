@@ -29,7 +29,7 @@ public class HomeProductsAdapter extends RecyclerView.Adapter<HomeProductsAdapte
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        holder.price.setText(productModelList.get(position).getProductPrice().toString());
+        holder.price.setText("₹"+productModelList.get(position).getProductPrice().toString());
         holder.productDesc.setText(productModelList.get(position).getProductDescription());
         holder.productName.setText(productModelList.get(position).getProductName());
         holder.sellerName.setText(productModelList.get(position).getSellerName());
