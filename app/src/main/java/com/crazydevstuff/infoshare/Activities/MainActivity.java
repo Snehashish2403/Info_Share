@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.widget.FrameLayout;
 import android.widget.Toast;
@@ -17,6 +18,7 @@ import com.crazydevstuff.infoshare.Models.RegisterModel;
 import com.crazydevstuff.infoshare.R;
 
 import com.crazydevstuff.infoshare.ViewModel.ProductViewModel;
+import com.firebase.ui.database.FirebaseRecyclerOptions;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -24,6 +26,7 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 import com.ismaeldivita.chipnavigation.ChipNavigationBar;
 
@@ -34,16 +37,16 @@ public class MainActivity extends AppCompatActivity {
 
     public static String username;
     private ChipNavigationBar navigationBar ;
-    private FirebaseAuth firebaseAuth;
     private Fragment fragment;
     private FrameLayout container;
-    private DatabaseReference reference;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         navigationBar = findViewById(R.id.bottomNavigationView);
         container = findViewById(R.id.container);
+        Intent intent=getIntent();
+        username=intent.getStringExtra("username");
         navigationBar.setOnItemSelectedListener(new ChipNavigationBar.OnItemSelectedListener() {
             @Override
             public void onItemSelected(int i) {
@@ -65,28 +68,6 @@ public class MainActivity extends AppCompatActivity {
             }
         });
         getSupportFragmentManager().beginTransaction().replace(R.id.container,new HomeFragment()).commit();
-        getUserInfo();
     }
 
-    private void getUserInfo(){
-        firebaseAuth = FirebaseAuth.getInstance();
-        reference = FirebaseDatabase.getInstance().getReference().child("users-list");
-        reference.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                for(DataSnapshot dataSnapshot : snapshot.getChildren()){
-                    RegisterModel model = dataSnapshot.getValue(RegisterModel.class);
-                    if(model.getEmail().equals(firebaseAuth.getCurrentUser().getEmail()))
-                        username = model.getName();
-                    break;
-                }
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-
-            }
-        });
-
-    }
 }
