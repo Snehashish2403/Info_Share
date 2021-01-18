@@ -1,0 +1,65 @@
+Index: app/src/main/java/com/crazydevstuff/infoshare/Activities/MainActivity.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package com.crazydevstuff.infoshare.Activities;\r\n\r\nimport androidx.annotation.NonNull;\r\nimport androidx.appcompat.app.AppCompatActivity;\r\nimport androidx.fragment.app.Fragment;\r\nimport androidx.lifecycle.ViewModelProvider;\r\n\r\nimport android.os.Bundle;\r\nimport android.widget.FrameLayout;\r\nimport android.widget.Toast;\r\n\r\nimport com.crazydevstuff.infoshare.Fragments.FavFragment;\r\nimport com.crazydevstuff.infoshare.Fragments.HomeFragment;\r\nimport com.crazydevstuff.infoshare.Fragments.ProfileFragment;\r\nimport com.crazydevstuff.infoshare.Models.ProductModel;\r\nimport com.crazydevstuff.infoshare.Models.RegisterModel;\r\nimport com.crazydevstuff.infoshare.R;\r\n\r\nimport com.crazydevstuff.infoshare.ViewModel.ProductViewModel;\r\nimport com.google.android.material.floatingactionbutton.FloatingActionButton;\r\nimport com.google.firebase.auth.FirebaseAuth;\r\nimport com.google.firebase.auth.FirebaseUser;\r\nimport com.google.firebase.database.DataSnapshot;\r\nimport com.google.firebase.database.DatabaseError;\r\nimport com.google.firebase.database.DatabaseReference;\r\nimport com.google.firebase.database.FirebaseDatabase;\r\nimport com.google.firebase.database.ValueEventListener;\r\nimport com.ismaeldivita.chipnavigation.ChipNavigationBar;\r\n\r\nimport java.util.Objects;\r\n\r\npublic class MainActivity extends AppCompatActivity {\r\n\r\n\r\n    public static String username;\r\n    private ChipNavigationBar navigationBar ;\r\n    private FirebaseAuth firebaseAuth;\r\n    private Fragment fragment;\r\n    private FrameLayout container;\r\n    private DatabaseReference reference;\r\n    @Override\r\n    protected void onCreate(Bundle savedInstanceState) {\r\n        super.onCreate(savedInstanceState);\r\n        setContentView(R.layout.activity_main);\r\n        navigationBar = findViewById(R.id.bottomNavigationView);\r\n        container = findViewById(R.id.container);\r\n        navigationBar.setOnItemSelectedListener(new ChipNavigationBar.OnItemSelectedListener() {\r\n            @Override\r\n            public void onItemSelected(int i) {\r\n                switch(i){\r\n                    case R.id.dash :\r\n                        fragment = new HomeFragment();\r\n                        break;\r\n                    case R.id.fav :\r\n                        fragment = new FavFragment();\r\n                        break;\r\n                    case R.id.user :\r\n                        fragment = new ProfileFragment();\r\n                        break;\r\n                    default:\r\n                        fragment = null;\r\n                        break;\r\n                }\r\n                getSupportFragmentManager().beginTransaction().replace(R.id.container,fragment).commit();\r\n            }\r\n        });\r\n        getSupportFragmentManager().beginTransaction().replace(R.id.container,new HomeFragment()).commit();\r\n        getUserInfo();\r\n    }\r\n\r\n    private void getUserInfo(){\r\n        firebaseAuth = FirebaseAuth.getInstance();\r\n        reference = FirebaseDatabase.getInstance().getReference().child(\"users-list\");\r\n        reference.addValueEventListener(new ValueEventListener() {\r\n            @Override\r\n            public void onDataChange(@NonNull DataSnapshot snapshot) {\r\n                for(DataSnapshot dataSnapshot : snapshot.getChildren()){\r\n                    RegisterModel model = dataSnapshot.getValue(RegisterModel.class);\r\n                    if(model.getEmail().equals(firebaseAuth.getCurrentUser().getEmail()))\r\n                        username = model.getName();\r\n                    break;\r\n                }\r\n            }\r\n\r\n            @Override\r\n            public void onCancelled(@NonNull DatabaseError error) {\r\n\r\n            }\r\n        });\r\n\r\n    }\r\n}\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/java/com/crazydevstuff/infoshare/Activities/MainActivity.java	(revision 0152fdcd4aab6a95a628292fcebd70f240a8af5e)
++++ app/src/main/java/com/crazydevstuff/infoshare/Activities/MainActivity.java	(date 1610868739039)
+@@ -17,6 +17,7 @@
+ import com.crazydevstuff.infoshare.R;
+ 
+ import com.crazydevstuff.infoshare.ViewModel.ProductViewModel;
++import com.firebase.ui.database.FirebaseRecyclerOptions;
+ import com.google.android.material.floatingactionbutton.FloatingActionButton;
+ import com.google.firebase.auth.FirebaseAuth;
+ import com.google.firebase.auth.FirebaseUser;
+@@ -24,6 +25,7 @@
+ import com.google.firebase.database.DatabaseError;
+ import com.google.firebase.database.DatabaseReference;
+ import com.google.firebase.database.FirebaseDatabase;
++import com.google.firebase.database.Query;
+ import com.google.firebase.database.ValueEventListener;
+ import com.ismaeldivita.chipnavigation.ChipNavigationBar;
+ 
+@@ -70,6 +72,11 @@
+ 
+     private void getUserInfo(){
+         firebaseAuth = FirebaseAuth.getInstance();
++        Query query = FirebaseDatabase.getInstance().getReference().child("uploads").orderByChild("sellerEmail").equalTo(firebaseAuth.getCurrentUser().getEmail());
++        FirebaseRecyclerOptions<ProductModel> options = new FirebaseRecyclerOptions
++                .Builder<ProductModel>()
++                .setQuery(query,ProductModel.class)
++                .build();
+         reference = FirebaseDatabase.getInstance().getReference().child("users-list");
+         reference.addValueEventListener(new ValueEventListener() {
+             @Override
+Index: app/src/main/java/com/crazydevstuff/infoshare/Fragments/ProfileFragment.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package com.crazydevstuff.infoshare.Fragments;\r\n\r\nimport android.content.Intent;\r\nimport android.os.AsyncTask;\r\nimport android.os.Bundle;\r\n\r\nimport androidx.annotation.NonNull;\r\nimport androidx.fragment.app.Fragment;\r\nimport androidx.lifecycle.Observer;\r\nimport androidx.lifecycle.ViewModelProvider;\r\nimport androidx.recyclerview.widget.LinearLayoutManager;\r\nimport androidx.recyclerview.widget.RecyclerView;\r\n\r\nimport android.util.Log;\r\nimport android.view.LayoutInflater;\r\nimport android.view.View;\r\nimport android.view.ViewGroup;\r\nimport android.widget.Button;\r\nimport android.widget.ImageView;\r\nimport android.widget.LinearLayout;\r\nimport android.widget.TextView;\r\nimport android.widget.Toast;\r\n\r\nimport com.crazydevstuff.infoshare.Activities.Login;\r\nimport com.crazydevstuff.infoshare.Activities.MainActivity;\r\nimport com.crazydevstuff.infoshare.Adapters.HomeProductsAdapter;\r\nimport com.crazydevstuff.infoshare.Adapters.RecentItemsAdapter;\r\nimport com.crazydevstuff.infoshare.Models.ProductModel;\r\nimport com.crazydevstuff.infoshare.Models.RegisterModel;\r\nimport com.crazydevstuff.infoshare.R;\r\nimport com.crazydevstuff.infoshare.ViewModel.ProductViewModel;\r\nimport com.firebase.ui.database.FirebaseRecyclerOptions;\r\nimport com.google.android.material.button.MaterialButton;\r\nimport com.google.firebase.auth.FirebaseAuth;\r\nimport com.google.firebase.database.DataSnapshot;\r\nimport com.google.firebase.database.DatabaseError;\r\nimport com.google.firebase.database.DatabaseReference;\r\nimport com.google.firebase.database.FirebaseDatabase;\r\nimport com.google.firebase.database.Query;\r\nimport com.google.firebase.database.ValueEventListener;\r\nimport com.squareup.picasso.Picasso;\r\n\r\nimport java.util.ArrayList;\r\nimport java.util.List;\r\nimport java.util.Objects;\r\n\r\nimport static android.content.ContentValues.TAG;\r\n\r\npublic class ProfileFragment extends Fragment {\r\n\r\n    private TextView profileNameTV, profileNumberTV, profileEmailTV;\r\n    private ImageView profileImageIV;\r\n    private FirebaseAuth firebaseAuth;\r\n    private Button logOutButton;\r\n    private DatabaseReference reference;\r\n    private RecyclerView productsRecyclerView;\r\n    private RecentItemsAdapter recentItemsAdapter;\r\n    public ProfileFragment() {\r\n        // Required empty public constructor\r\n    }\r\n\r\n    @Override\r\n    public View onCreateView(LayoutInflater inflater, ViewGroup container,\r\n                             Bundle savedInstanceState) {\r\n        View v =  inflater.inflate(R.layout.fragment_profile, container, false);\r\n\r\n        profileEmailTV = v.findViewById(R.id.user_profileEmailTV);\r\n        profileImageIV = v.findViewById(R.id.user_profileIV);\r\n        profileNameTV = v.findViewById(R.id.user_profileNameTV);\r\n        profileNumberTV = v.findViewById(R.id.user_profileNumberTV);\r\n        logOutButton = v.findViewById(R.id.logOutButton);\r\n        reference = FirebaseDatabase.getInstance().getReference();\r\n        productsRecyclerView = v.findViewById(R.id.yourItemsRV);\r\n        firebaseAuth = FirebaseAuth.getInstance();\r\n        logOutButton.setOnClickListener(new View.OnClickListener() {\r\n            @Override\r\n            public void onClick(View v) {\r\n                logOut();\r\n            }\r\n        });\r\n\r\n        setInfo();\r\n        getRecentItems();\r\n        return v;\r\n    }\r\n    private void logOut(){\r\n        firebaseAuth.signOut();\r\n        startActivity(new Intent(getContext(),Login.class));\r\n        getActivity().finish();\r\n    }\r\n    private void setInfo(){\r\n        String item=\"https://srmrc.nihr.ac.uk/wp-content/uploads/female-placeholder.jpg\";\r\n        Picasso.get().load(item)\r\n                .fit()\r\n                .centerInside()\r\n                .into(profileImageIV);\r\n        profileEmailTV.setText(firebaseAuth.getCurrentUser().getEmail());\r\n\r\n    }\r\n\r\n   private void getRecentItems(){\r\n        String emailSeller = firebaseAuth.getCurrentUser().getEmail();\r\n        Query query = FirebaseDatabase.getInstance().getReference().child(\"uploads\").orderByChild(\"sellerEmail\").equalTo(emailSeller);\r\n        FirebaseRecyclerOptions<ProductModel> options = new FirebaseRecyclerOptions.Builder<ProductModel>().setQuery(query,ProductModel.class).build();\r\n\r\n        recentItemsAdapter = new RecentItemsAdapter(options);\r\n        productsRecyclerView.setAdapter(recentItemsAdapter);\r\n        productsRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));\r\n    }\r\n\r\n    @Override\r\n    public void onStart() {\r\n        super.onStart();\r\n        recentItemsAdapter.startListening();\r\n    }\r\n\r\n    @Override\r\n    public void onStop() {\r\n        super.onStop();\r\n        recentItemsAdapter.stopListening();\r\n    }\r\n\r\n\r\n}
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/java/com/crazydevstuff/infoshare/Fragments/ProfileFragment.java	(revision 0152fdcd4aab6a95a628292fcebd70f240a8af5e)
++++ app/src/main/java/com/crazydevstuff/infoshare/Fragments/ProfileFragment.java	(date 1610867894894)
+@@ -95,13 +95,16 @@
+                 .centerInside()
+                 .into(profileImageIV);
+         profileEmailTV.setText(firebaseAuth.getCurrentUser().getEmail());
+-
++        profileNameTV.setText(MainActivity.username);
+     }
+ 
+    private void getRecentItems(){
+         String emailSeller = firebaseAuth.getCurrentUser().getEmail();
+         Query query = FirebaseDatabase.getInstance().getReference().child("uploads").orderByChild("sellerEmail").equalTo(emailSeller);
+-        FirebaseRecyclerOptions<ProductModel> options = new FirebaseRecyclerOptions.Builder<ProductModel>().setQuery(query,ProductModel.class).build();
++        FirebaseRecyclerOptions<ProductModel> options = new FirebaseRecyclerOptions
++                .Builder<ProductModel>()
++                .setQuery(query,ProductModel.class)
++                .build();
+ 
+         recentItemsAdapter = new RecentItemsAdapter(options);
+         productsRecyclerView.setAdapter(recentItemsAdapter);

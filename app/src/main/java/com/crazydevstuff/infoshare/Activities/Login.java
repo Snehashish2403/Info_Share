@@ -35,6 +35,7 @@ public class Login extends AppCompatActivity {
     EditText password;
     Button login;
 
+    public static String username;
     FirebaseUser firebaseuser;
     List<RegisterModel> users=new ArrayList<>();
     private FirebaseAuth firebaseAuth;

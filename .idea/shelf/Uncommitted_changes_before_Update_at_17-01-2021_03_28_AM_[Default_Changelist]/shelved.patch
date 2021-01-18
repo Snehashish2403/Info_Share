@@ -1,0 +1,160 @@
+Index: app/src/main/java/com/crazydevstuff/infoshare/Models/ProductModel.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package com.crazydevstuff.infoshare.Models;\r\n\r\nimport android.content.Intent;\r\nimport android.graphics.Bitmap;\r\n\r\nimport androidx.room.Entity;\r\nimport androidx.room.Ignore;\r\nimport androidx.room.PrimaryKey;\r\n\r\n@Entity(tableName = \"saved_products\")\r\npublic class ProductModel {\r\n    @PrimaryKey(autoGenerate = true)\r\n    private int id;\r\n    private String productName;\r\n    \r\n    private String productDescription;\r\n\r\n    private String productImage;\r\n\r\n    private String sellerName;\r\n\r\n    private Integer productPrice;\r\n\r\n    private String sellerImage;\r\n\r\n    public ProductModel(String productName, String productDescription, String productImage, String sellerName,Integer productPrice, String sellerImage) {\r\n        this.productName = productName;\r\n        this.productDescription = productDescription;\r\n        this.productPrice = productPrice;\r\n        this.productImage = productImage;\r\n        this.sellerName = sellerName;\r\n        this.sellerImage = sellerImage;\r\n    }\r\n\r\n    public Integer getProductPrice() {\r\n        return productPrice;\r\n    }\r\n\r\n    public void setId(int id){\r\n        this.id=id;\r\n    }\r\n\r\n    public int getId(){\r\n        return id;\r\n    }\r\n\r\n    public String getSellerImage() {\r\n        return sellerImage;\r\n    }\r\n\r\n    public String getProductName() {\r\n        return productName;\r\n    }\r\n\r\n    public String getProductDescription() {\r\n        return productDescription;\r\n    }\r\n\r\n    public String getProductImage() {\r\n        return productImage;\r\n    }\r\n\r\n    public String getSellerName() {\r\n        return sellerName;\r\n    }\r\n\r\n}\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/java/com/crazydevstuff/infoshare/Models/ProductModel.java	(revision c80e4e4b7322e493f58a50dacc7d4acace14e0bd)
++++ app/src/main/java/com/crazydevstuff/infoshare/Models/ProductModel.java	(date 1610810643473)
+@@ -23,6 +23,9 @@
+ 
+     private String sellerImage;
+ 
++    public ProductModel(){
++        // Empty constructor needed for firebase
++    }
+     public ProductModel(String productName, String productDescription, String productImage, String sellerName,Integer productPrice, String sellerImage) {
+         this.productName = productName;
+         this.productDescription = productDescription;
+@@ -64,4 +67,27 @@
+         return sellerName;
+     }
+ 
++    public void setProductName(String productName) {
++        this.productName = productName;
++    }
++
++    public void setProductDescription(String productDescription) {
++        this.productDescription = productDescription;
++    }
++
++    public void setProductImage(String productImage) {
++        this.productImage = productImage;
++    }
++
++    public void setSellerName(String sellerName) {
++        this.sellerName = sellerName;
++    }
++
++    public void setProductPrice(Integer productPrice) {
++        this.productPrice = productPrice;
++    }
++
++    public void setSellerImage(String sellerImage) {
++        this.sellerImage = sellerImage;
++    }
+ }
+Index: app/src/main/java/com/crazydevstuff/infoshare/Activities/MainActivity.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package com.crazydevstuff.infoshare.Activities;\r\n\r\nimport androidx.appcompat.app.AppCompatActivity;\r\nimport androidx.fragment.app.Fragment;\r\nimport androidx.lifecycle.ViewModelProvider;\r\n\r\nimport android.os.Bundle;\r\nimport android.widget.FrameLayout;\r\n\r\nimport com.crazydevstuff.infoshare.Fragments.FavFragment;\r\nimport com.crazydevstuff.infoshare.Fragments.HomeFragment;\r\nimport com.crazydevstuff.infoshare.Fragments.ProfileFragment;\r\nimport com.crazydevstuff.infoshare.Models.ProductModel;\r\nimport com.crazydevstuff.infoshare.R;\r\n\r\nimport com.crazydevstuff.infoshare.ViewModel.ProductViewModel;\r\nimport com.google.android.material.floatingactionbutton.FloatingActionButton;\r\nimport com.ismaeldivita.chipnavigation.ChipNavigationBar;\r\n\r\npublic class MainActivity extends AppCompatActivity {\r\n\r\n    private ChipNavigationBar navigationBar ;\r\n    private Fragment fragment;\r\n    private FrameLayout container;\r\n    @Override\r\n    protected void onCreate(Bundle savedInstanceState) {\r\n        super.onCreate(savedInstanceState);\r\n        setContentView(R.layout.activity_main);\r\n        navigationBar = findViewById(R.id.bottomNavigationView);\r\n        container = findViewById(R.id.container);\r\n\r\n        navigationBar.setOnItemSelectedListener(new ChipNavigationBar.OnItemSelectedListener() {\r\n            @Override\r\n            public void onItemSelected(int i) {\r\n                switch(i){\r\n                    case R.id.dash :\r\n                        fragment = new HomeFragment();\r\n                        break;\r\n                    case R.id.fav :\r\n                        fragment = new FavFragment();\r\n                        break;\r\n                    case R.id.user :\r\n                        fragment = new ProfileFragment();\r\n                        break;\r\n                    default:\r\n                        fragment = null;\r\n                        break;\r\n                }\r\n                getSupportFragmentManager().beginTransaction().replace(R.id.container,fragment).commit();\r\n            }\r\n        });\r\n        getSupportFragmentManager().beginTransaction().replace(R.id.container,new HomeFragment()).commit();\r\n    }\r\n}\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/java/com/crazydevstuff/infoshare/Activities/MainActivity.java	(revision c80e4e4b7322e493f58a50dacc7d4acace14e0bd)
++++ app/src/main/java/com/crazydevstuff/infoshare/Activities/MainActivity.java	(date 1610810643479)
+@@ -4,6 +4,7 @@
+ import androidx.fragment.app.Fragment;
+ import androidx.lifecycle.ViewModelProvider;
+ 
++import android.content.Intent;
+ import android.os.Bundle;
+ import android.widget.FrameLayout;
+ 
+@@ -22,13 +23,15 @@
+     private ChipNavigationBar navigationBar ;
+     private Fragment fragment;
+     private FrameLayout container;
++    public static String username;
+     @Override
+     protected void onCreate(Bundle savedInstanceState) {
+         super.onCreate(savedInstanceState);
+         setContentView(R.layout.activity_main);
+         navigationBar = findViewById(R.id.bottomNavigationView);
+         container = findViewById(R.id.container);
+-
++        Intent intent=getIntent();
++        username=intent.getStringExtra("username");
+         navigationBar.setOnItemSelectedListener(new ChipNavigationBar.OnItemSelectedListener() {
+             @Override
+             public void onItemSelected(int i) {
+Index: app/src/main/res/layout/activity_make_product.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><?xml version=\"1.0\" encoding=\"utf-8\"?>\r\n<RelativeLayout xmlns:android=\"http://schemas.android.com/apk/res/android\"\r\n    xmlns:app=\"http://schemas.android.com/apk/res-auto\"\r\n    xmlns:tools=\"http://schemas.android.com/tools\"\r\n    android:layout_width=\"match_parent\"\r\n    android:layout_height=\"match_parent\"\r\n    tools:context=\".Activities.MakeProduct\">\r\n<LinearLayout\r\n    android:layout_width=\"match_parent\"\r\n    android:layout_height=\"wrap_content\"\r\n    android:orientation=\"vertical\"\r\n    android:layout_centerHorizontal=\"true\"\r\n    android:padding=\"20dp\">\r\n    <TextView\r\n        android:layout_width=\"wrap_content\"\r\n        android:layout_height=\"wrap_content\"\r\n        android:text=\"Fill the details\"\r\n        android:fontFamily=\"@font/maven_pro_bold\"\r\n        android:textSize=\"18sp\"/>\r\n    <com.google.android.material.textfield.TextInputLayout\r\n        android:id=\"@+id/ET_1\"\r\n        android:layout_width=\"match_parent\"\r\n        android:layout_height=\"wrap_content\"\r\n        android:layout_marginTop=\"20dp\"\r\n        android:hint=\"Item Name\"\r\n        android:focusableInTouchMode=\"true\">\r\n\r\n        <!--this is the actual edit text which takes the input-->\r\n        <com.google.android.material.textfield.TextInputEditText\r\n            android:id=\"@+id/itemNameET\"\r\n            android:layout_width=\"match_parent\"\r\n            android:textStyle=\"bold\"\r\n            android:layout_height=\"wrap_content\" />\r\n\r\n    </com.google.android.material.textfield.TextInputLayout>\r\n    <com.google.android.material.textfield.TextInputLayout\r\n        android:id=\"@+id/ET_2\"\r\n        android:layout_width=\"match_parent\"\r\n        android:layout_height=\"wrap_content\"\r\n        android:layout_marginTop=\"10dp\"\r\n        android:hint=\"Description\"\r\n        android:focusableInTouchMode=\"true\">\r\n\r\n        <!--this is the actual edit text which takes the input-->\r\n        <com.google.android.material.textfield.TextInputEditText\r\n            android:id=\"@+id/itemDescpET\"\r\n            android:layout_width=\"match_parent\"\r\n            android:maxLength=\"200\"\r\n            android:maxLines=\"7\"\r\n            android:layout_height=\"wrap_content\" />\r\n\r\n    </com.google.android.material.textfield.TextInputLayout>\r\n\r\n    <com.google.android.material.textfield.TextInputLayout\r\n        android:id=\"@+id/ET_3\"\r\n        android:layout_width=\"match_parent\"\r\n        android:layout_height=\"wrap_content\"\r\n        android:layout_marginTop=\"10dp\"\r\n        android:hint=\"Price\"\r\n        android:focusableInTouchMode=\"true\">\r\n\r\n        <!--this is the actual edit text which takes the input-->\r\n        <com.google.android.material.textfield.TextInputEditText\r\n            android:id=\"@+id/itemPriceTV\"\r\n            android:layout_width=\"match_parent\"\r\n            android:textStyle=\"bold\"\r\n            android:inputType=\"number\"\r\n            android:textColor=\"@color/colorAccent\"\r\n            android:layout_height=\"wrap_content\" />\r\n\r\n    </com.google.android.material.textfield.TextInputLayout>\r\n<ImageView\r\n    android:id=\"@+id/selectImageIV\"\r\n    android:layout_marginTop=\"40dp\"\r\n    android:layout_gravity=\"end\"\r\n    android:layout_width=\"wrap_content\"\r\n    android:src=\"@drawable/item_image_icon\"\r\n    android:layout_height=\"wrap_content\"/>\r\n    <ImageView\r\n        android:id=\"@+id/item_displayIV\"\r\n        android:layout_width=\"match_parent\"\r\n        android:scaleType=\"centerCrop\"\r\n        android:layout_height=\"250dp\"\r\n        android:visibility=\"gone\"/>\r\n    <Button\r\n        android:id=\"@+id/saveButton\"\r\n        android:layout_width=\"100dp\"\r\n        android:layout_height=\"40dp\"\r\n        android:text=\"Save\"\r\n        android:backgroundTint=\"@color/colorPrimaryDark\"/>\r\n</LinearLayout>\r\n</RelativeLayout>
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/res/layout/activity_make_product.xml	(revision c80e4e4b7322e493f58a50dacc7d4acace14e0bd)
++++ app/src/main/res/layout/activity_make_product.xml	(date 1610810643493)
+@@ -82,11 +82,19 @@
+         android:scaleType="centerCrop"
+         android:layout_height="250dp"
+         android:visibility="gone"/>
++
+     <Button
+         android:id="@+id/saveButton"
+         android:layout_width="100dp"
+         android:layout_height="40dp"
+-        android:text="Save"
+-        android:backgroundTint="@color/colorPrimaryDark"/>
++        android:backgroundTint="@color/colorPrimaryDark"
++        android:text="Save" />
++
++    <ProgressBar
++        android:id="@+id/progressBar"
++        style="?android:attr/progressBarStyleHorizontal"
++        android:layout_width="match_parent"
++        android:layout_height="wrap_content" />
+ </LinearLayout>
++
+ </RelativeLayout>
+\ No newline at end of file
+Index: app/src/main/java/com/crazydevstuff/infoshare/Fragments/ProfileFragment.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package com.crazydevstuff.infoshare.Fragments;\r\n\r\nimport android.content.Intent;\r\nimport android.os.Bundle;\r\n\r\nimport androidx.annotation.NonNull;\r\nimport androidx.fragment.app.Fragment;\r\nimport androidx.lifecycle.Observer;\r\nimport androidx.lifecycle.ViewModelProvider;\r\nimport androidx.recyclerview.widget.LinearLayoutManager;\r\nimport androidx.recyclerview.widget.RecyclerView;\r\n\r\nimport android.util.Log;\r\nimport android.view.LayoutInflater;\r\nimport android.view.View;\r\nimport android.view.ViewGroup;\r\nimport android.widget.Button;\r\nimport android.widget.ImageView;\r\nimport android.widget.TextView;\r\n\r\nimport com.crazydevstuff.infoshare.Activities.Login;\r\nimport com.crazydevstuff.infoshare.Adapters.HomeProductsAdapter;\r\nimport com.crazydevstuff.infoshare.Models.ProductModel;\r\nimport com.crazydevstuff.infoshare.Models.RegisterModel;\r\nimport com.crazydevstuff.infoshare.R;\r\nimport com.crazydevstuff.infoshare.ViewModel.ProductViewModel;\r\nimport com.google.android.material.button.MaterialButton;\r\nimport com.google.firebase.auth.FirebaseAuth;\r\nimport com.google.firebase.database.DataSnapshot;\r\nimport com.google.firebase.database.DatabaseError;\r\nimport com.google.firebase.database.DatabaseReference;\r\nimport com.google.firebase.database.FirebaseDatabase;\r\nimport com.google.firebase.database.ValueEventListener;\r\nimport com.squareup.picasso.Picasso;\r\n\r\nimport java.util.ArrayList;\r\nimport java.util.List;\r\nimport java.util.Objects;\r\n\r\nimport static android.content.ContentValues.TAG;\r\n\r\npublic class ProfileFragment extends Fragment {\r\n\r\n    private TextView profileNameTV, profileNumberTV, profileEmailTV;\r\n    private ImageView profileImageIV;\r\n    private FirebaseAuth firebaseAuth;\r\n    private Button logOutButton;\r\n    private DatabaseReference reference;\r\n    private RegisterModel model;\r\n    private RecyclerView productsRecyclerView;\r\n    private HomeProductsAdapter productsAdapter;\r\n    private ProductViewModel productViewModel;\r\n\r\n    public ProfileFragment() {\r\n        // Required empty public constructor\r\n    }\r\n\r\n    @Override\r\n    public View onCreateView(LayoutInflater inflater, ViewGroup container,\r\n                             Bundle savedInstanceState) {\r\n        View v =  inflater.inflate(R.layout.fragment_profile, container, false);\r\n\r\n        profileEmailTV = v.findViewById(R.id.user_profileEmailTV);\r\n        profileImageIV = v.findViewById(R.id.user_profileIV);\r\n        profileNameTV = v.findViewById(R.id.user_profileNameTV);\r\n        profileNumberTV = v.findViewById(R.id.user_profileNumberTV);\r\n        logOutButton = v.findViewById(R.id.logOutButton);\r\n        reference = FirebaseDatabase.getInstance().getReference();\r\n        productsRecyclerView = v.findViewById(R.id.yourItemsRV);\r\n        firebaseAuth = FirebaseAuth.getInstance();\r\n        logOutButton.setOnClickListener(new View.OnClickListener() {\r\n            @Override\r\n            public void onClick(View v) {\r\n                logOut();\r\n            }\r\n        });\r\n\r\n        setInfo();\r\n\r\n        String des = \"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat\";\r\n        String item=\"https://www.imindq.com/Portals/0/EasyDNNNews/273/950600p488EDNmainimg-book-mind-mapping.jpg\";\r\n        String seller=\"https://srmrc.nihr.ac.uk/wp-content/uploads/female-placeholder.jpg\";\r\n        ProductModel p1 = new ProductModel(\"Books\",des,item,\"User_1\",2000,seller);\r\n        ProductModel p2 = new ProductModel(\"Books\",des,item,\"User_2\",5000,seller);\r\n\r\n        productsAdapter = new HomeProductsAdapter();\r\n        productViewModel=new ViewModelProvider.AndroidViewModelFactory(getActivity().getApplication()).create(ProductViewModel.class);\r\n        productViewModel.deleteAllCache();\r\n        productViewModel.addCache(p1);\r\n        productViewModel.addCache(p2);\r\n        productViewModel.addCache(p1);\r\n        productViewModel.addCache(p2);\r\n        productViewModel.getAllCachedProducts().observe(getViewLifecycleOwner(), new Observer<List<ProductModel>>() {\r\n            @Override\r\n            public void onChanged(List<ProductModel> productModels) {\r\n                productsAdapter.setProductModelList(productModels);\r\n            }\r\n        });\r\n        productsRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));\r\n        productsRecyclerView.setHasFixedSize(true);\r\n        productsRecyclerView.setAdapter(productsAdapter);\r\n        return v;\r\n    }\r\n    private void logOut(){\r\n        firebaseAuth.signOut();\r\n        startActivity(new Intent(getContext(),Login.class));\r\n        getActivity().finish();\r\n    }\r\n    private void setInfo(){\r\n        String item=\"https://srmrc.nihr.ac.uk/wp-content/uploads/female-placeholder.jpg\";\r\n        Picasso.get().load(item)\r\n                .fit()\r\n                .centerInside()\r\n                .into(profileImageIV);\r\n        profileEmailTV.setText(Objects.requireNonNull(firebaseAuth.getCurrentUser()).getEmail());\r\n        reference.addListenerForSingleValueEvent(new ValueEventListener() {\r\n            @Override\r\n            public void onDataChange(@NonNull DataSnapshot snapshot) {\r\n\r\n                model = snapshot.getValue(RegisterModel.class);\r\n                assert model != null;\r\n                System.out.println(model.getName() + model.getEmail());\r\n\r\n            }\r\n\r\n            @Override\r\n            public void onCancelled(@NonNull DatabaseError error) {\r\n                Log.w(TAG, \"loadPost:onCancelled\", error.toException());\r\n            }\r\n        });\r\n    }\r\n}
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/java/com/crazydevstuff/infoshare/Fragments/ProfileFragment.java	(revision c80e4e4b7322e493f58a50dacc7d4acace14e0bd)
++++ app/src/main/java/com/crazydevstuff/infoshare/Fragments/ProfileFragment.java	(date 1610810947128)
+@@ -77,19 +77,8 @@
+ 
+         setInfo();
+ 
+-        String des = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat";
+-        String item="https://www.imindq.com/Portals/0/EasyDNNNews/273/950600p488EDNmainimg-book-mind-mapping.jpg";
+-        String seller="https://srmrc.nihr.ac.uk/wp-content/uploads/female-placeholder.jpg";
+-        ProductModel p1 = new ProductModel("Books",des,item,"User_1",2000,seller);
+-        ProductModel p2 = new ProductModel("Books",des,item,"User_2",5000,seller);
+-
+         productsAdapter = new HomeProductsAdapter();
+         productViewModel=new ViewModelProvider.AndroidViewModelFactory(getActivity().getApplication()).create(ProductViewModel.class);
+-        productViewModel.deleteAllCache();
+-        productViewModel.addCache(p1);
+-        productViewModel.addCache(p2);
+-        productViewModel.addCache(p1);
+-        productViewModel.addCache(p2);
+         productViewModel.getAllCachedProducts().observe(getViewLifecycleOwner(), new Observer<List<ProductModel>>() {
+             @Override
+             public void onChanged(List<ProductModel> productModels) {
+Index: app/build.gradle
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>apply plugin: 'com.android.application'\r\n\r\nandroid {\r\n    compileSdkVersion 29\r\n    buildToolsVersion \"29.0.2\"\r\n    defaultConfig {\r\n        applicationId \"com.crazydevstuff.infoshare\"\r\n        minSdkVersion 25\r\n        targetSdkVersion 29\r\n        versionCode 1\r\n        versionName \"1.0\"\r\n        testInstrumentationRunner \"androidx.test.runner.AndroidJUnitRunner\"\r\n    }\r\n    buildTypes {\r\n        release {\r\n            minifyEnabled false\r\n            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'\r\n        }\r\n    }\r\n}\r\n\r\ndependencies {\r\n    def lifecycle_version = \"2.2.0\"\r\n    def room_version = \"2.2.5\"\r\n    def lottieVersion = \"3.6.0\"\r\n    implementation \"com.google.android.material:material:1.2.0\"\r\n// ViewModel\r\n    implementation \"androidx.lifecycle:lifecycle-viewmodel:$lifecycle_version\"\r\n// LiveData\r\n    implementation \"androidx.lifecycle:lifecycle-livedata:$lifecycle_version\"\r\n// Annotation processor\r\n    annotationProcessor \"androidx.lifecycle:lifecycle-compiler:$lifecycle_version\"\r\n\r\n// Room\r\n    implementation \"androidx.room:room-runtime:$room_version\"\r\n    annotationProcessor \"androidx.room:room-compiler:$room_version\"\r\n\r\n    //Lottie\r\n    implementation \"com.airbnb.android:lottie:$lottieVersion\"\r\n\r\n\r\n    implementation 'com.squareup.picasso:picasso:2.71828'\r\n    annotationProcessor \"androidx.room:room-compiler:$room_version\"\r\n    implementation fileTree(dir: 'libs', include: ['*.jar'])\r\n    implementation 'androidx.appcompat:appcompat:1.0.2'\r\n    implementation 'androidx.constraintlayout:constraintlayout:1.1.3'\r\n    implementation 'com.google.android.material:material:1.2.1'\r\n    implementation 'androidx.cardview:cardview:1.0.0'\r\n    testImplementation 'junit:junit:4.12'\r\n    androidTestImplementation 'androidx.test.ext:junit:1.1.0'\r\n    androidTestImplementation 'androidx.test.espresso:espresso-core:3.1.1'\r\n\r\n    implementation 'com.squareup.picasso:picasso:2.71828'\r\n\r\n    implementation 'de.hdodenhof:circleimageview:3.1.0'\r\n\r\n    implementation 'com.google.android.material:material:1.3.0-alpha03'\r\n\r\n    implementation 'com.google.firebase:firebase-storage:16.0.4'\r\n    implementation 'com.google.firebase:firebase-auth:19.3.1'\r\n    implementation 'com.google.firebase:firebase-database:19.4.0'\r\n\r\n    implementation platform('com.google.firebase:firebase-bom:26.0.0')\r\n    implementation 'com.ismaeldivita.chipnavigation:chip-navigation-bar:1.3.4'\r\n    implementation 'org.jetbrains.kotlin:kotlin-stdlib:1.4.10'\r\n}\r\napply plugin: 'com.google.gms.google-services'
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/build.gradle	(revision c80e4e4b7322e493f58a50dacc7d4acace14e0bd)
++++ app/build.gradle	(date 1610810643466)
+@@ -56,7 +56,7 @@
+ 
+     implementation 'com.google.android.material:material:1.3.0-alpha03'
+ 
+-    implementation 'com.google.firebase:firebase-storage:16.0.4'
++    implementation 'com.google.firebase:firebase-storage:19.2.1'
+     implementation 'com.google.firebase:firebase-auth:19.3.1'
+     implementation 'com.google.firebase:firebase-database:19.4.0'
+ 

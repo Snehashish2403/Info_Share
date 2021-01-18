@@ -21,6 +21,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.crazydevstuff.infoshare.Activities.Login;
+import com.crazydevstuff.infoshare.Activities.MainActivity;
 import com.crazydevstuff.infoshare.Adapters.RecentItemsAdapter;
 import com.crazydevstuff.infoshare.Interfaces.RecentItemsAdapterActionListener;
 import com.crazydevstuff.infoshare.Models.ProductModel;
@@ -98,13 +99,16 @@ public class ProfileFragment extends Fragment implements RecentItemsAdapterActio
                 .centerInside()
                 .into(profileImageIV);
         profileEmailTV.setText(firebaseAuth.getCurrentUser().getEmail());
-
+        profileNameTV.setText(MainActivity.username);
     }
 
    private void getRecentItems(){
         String emailSeller = firebaseAuth.getCurrentUser().getEmail();
         Query query = FirebaseDatabase.getInstance().getReference().child("uploads").orderByChild("sellerEmail").equalTo(emailSeller);
-        FirebaseRecyclerOptions<ProductModel> options = new FirebaseRecyclerOptions.Builder<ProductModel>().setQuery(query,ProductModel.class).build();
+        FirebaseRecyclerOptions<ProductModel> options = new FirebaseRecyclerOptions
+                .Builder<ProductModel>()
+                .setQuery(query,ProductModel.class)
+                .build();
 
         recentItemsAdapter = new RecentItemsAdapter(options,this);
         productsRecyclerView.setAdapter(recentItemsAdapter);
