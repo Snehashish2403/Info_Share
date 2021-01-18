@@ -104,7 +104,8 @@ public class MakeProduct extends AppCompatActivity {
     }
     public void saveImage(){
         if(filePath!=null){
-            final StorageReference fileReference=storageReference.child(System.currentTimeMillis()+"."+getFileExtension(filePath));
+            final String uploadId=databaseReference.push().getKey();
+            final StorageReference fileReference=storageReference.child(uploadId+"."+getFileExtension(filePath));
             storageTask=fileReference.putFile(filePath)
                     .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                         @Override
@@ -124,7 +125,7 @@ public class MakeProduct extends AppCompatActivity {
                                     String name=itemName.getText().toString();
                                     String email = firebaseAuth.getCurrentUser().getEmail();
                                     ProductModel product=new ProductModel(name,description,imageURL,username,Integer.parseInt(price),seller,email);
-                                    String uploadId=databaseReference.push().getKey();
+                                    product.setKey(uploadId);
                                     databaseReference.child(uploadId).setValue(product);
                                     finish();
                                 }

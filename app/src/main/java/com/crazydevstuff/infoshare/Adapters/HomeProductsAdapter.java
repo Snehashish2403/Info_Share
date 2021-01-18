@@ -66,6 +66,7 @@ public class HomeProductsAdapter extends RecyclerView.Adapter<HomeProductsAdapte
             productName = itemView.findViewById(R.id.prod_nameTV);
             productDesc = itemView.findViewById(R.id.prod_descrpTv);
             price = itemView.findViewById(R.id.prod_priceTV);
+
         }
     }
 }

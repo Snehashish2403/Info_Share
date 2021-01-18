@@ -1,8 +1,5 @@
 package com.crazydevstuff.infoshare.Models;
 
-import android.content.Intent;
-import android.graphics.Bitmap;
-
 import androidx.room.Entity;
 import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
@@ -24,6 +21,9 @@ public class ProductModel {
     private String sellerImage;
 
     private String sellerEmail;
+
+    @Ignore
+    private String key;
 
     public ProductModel(){
 
@@ -101,5 +101,13 @@ public class ProductModel {
 
     public void setSellerImage(String sellerImage) {
         this.sellerImage = sellerImage;
+    }
+
+    public String getKey() {
+        return key;
+    }
+
+    public void setKey(String key) {
+        this.key = key;
     }
 }

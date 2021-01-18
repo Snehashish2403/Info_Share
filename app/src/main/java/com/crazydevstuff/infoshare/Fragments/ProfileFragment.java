@@ -7,10 +7,13 @@ import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.LiveData;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.provider.ContactsContract;
 import android.provider.MediaStore;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -27,13 +30,19 @@ import com.crazydevstuff.infoshare.Interfaces.RecentItemsAdapterActionListener;
 import com.crazydevstuff.infoshare.Models.ProductModel;
 import com.crazydevstuff.infoshare.R;
 import com.firebase.ui.database.FirebaseRecyclerOptions;
+import com.firebase.ui.database.ObservableSnapshotArray;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
+import com.google.firebase.database.ValueEventListener;
 import com.squareup.picasso.Picasso;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
@@ -50,7 +59,10 @@ public class ProfileFragment extends Fragment implements RecentItemsAdapterActio
     private DatabaseReference reference;
     private RecyclerView productsRecyclerView;
     private RecentItemsAdapter recentItemsAdapter;
-    private AlertDialog.Builder builder;
+    private ValueEventListener listener;
+    private FirebaseRecyclerOptions<ProductModel> options;
+    private List<ProductModel> fetchedProducts=new ArrayList<>();
+
     public ProfileFragment() {
         // Required empty public constructor
     }
@@ -85,6 +97,7 @@ public class ProfileFragment extends Fragment implements RecentItemsAdapterActio
                 updateProfilePic();
             }
         });
+
         return v;
     }
     private void logOut(){
@@ -105,20 +118,38 @@ public class ProfileFragment extends Fragment implements RecentItemsAdapterActio
    private void getRecentItems(){
         String emailSeller = firebaseAuth.getCurrentUser().getEmail();
         Query query = FirebaseDatabase.getInstance().getReference().child("uploads").orderByChild("sellerEmail").equalTo(emailSeller);
-        FirebaseRecyclerOptions<ProductModel> options = new FirebaseRecyclerOptions
+        options = new FirebaseRecyclerOptions
                 .Builder<ProductModel>()
                 .setQuery(query,ProductModel.class)
                 .build();
 
-        recentItemsAdapter = new RecentItemsAdapter(options,this);
+        recentItemsAdapter = new RecentItemsAdapter(options,this,getContext());
         productsRecyclerView.setAdapter(recentItemsAdapter);
         productsRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+
     }
 
     @Override
     public void onStart() {
         super.onStart();
         recentItemsAdapter.startListening();
+        Query query1=FirebaseDatabase.getInstance().getReference().child("uploads").orderByChild("sellerEmail").equalTo(firebaseAuth.getCurrentUser().getEmail());
+        listener=query1.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                fetchedProducts.clear();
+                for(DataSnapshot dataSnapshot:snapshot.getChildren()){
+                    ProductModel currentProduct=dataSnapshot.getValue(ProductModel.class);
+                    fetchedProducts.add(currentProduct);
+                }
+                System.out.println("SIZE: "+fetchedProducts.size());
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
     }
 
     @Override
@@ -131,32 +162,10 @@ public class ProfileFragment extends Fragment implements RecentItemsAdapterActio
     @Override
     public void onViewClicked(int clickedViewId, int clickedItemPosition) {
         if(clickedViewId == R.id.delete_yourItemIV){
-            showAlertDialog(clickedItemPosition);
         }
     }
 
-    private void showAlertDialog(int clickedItemPosition){
-        builder = new AlertDialog.Builder(getContext());
-        builder.setMessage("Do you want to delete this post ?")
-                .setCancelable(false)
-                .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int id) {
-                        dialog.cancel();
-                        Toast.makeText(getContext(),"you choose yes action for alertbox",
-                                Toast.LENGTH_SHORT).show();
-                    }
-                })
-                .setNegativeButton("No", new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int id) {
-                        dialog.cancel();
-                        Toast.makeText(getContext(),"you choose no action for alertbox",
-                                Toast.LENGTH_SHORT).show();
-                    }
-                });
-        AlertDialog alert = builder.create();
-        alert.setTitle("Delete Item Post");
-        alert.show();
-    }
+
 
     private void updateProfilePic(){
         Intent galleryIntent = new Intent(Intent.ACTION_PICK,
