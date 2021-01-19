@@ -9,7 +9,7 @@ import androidx.room.RoomDatabase;
 import com.crazydevstuff.infoshare.DAO.CacheProductsDAO;
 import com.crazydevstuff.infoshare.Models.ProductModel;
 
-@Database(entities = ProductModel.class,version = 2)
+@Database(entities = ProductModel.class,version = 1)
 public abstract class ProductsDatabase extends RoomDatabase {
     private static ProductsDatabase instance;
     public abstract CacheProductsDAO cachedProductsDAO();

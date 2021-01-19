@@ -36,7 +36,7 @@ public class FavFragment extends Fragment implements ItemsAdapterActionListener 
     }
 
     @Override
-    public void onViewClicked(int clickedViewId, int clickedItemPosition) {
+    public void onViewClicked(int clickedViewId, int clickedItemPosition, String itemKey) {
 
     }
 

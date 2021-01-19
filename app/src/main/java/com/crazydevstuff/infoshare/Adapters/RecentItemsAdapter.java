@@ -63,7 +63,7 @@ public class RecentItemsAdapter extends FirebaseRecyclerAdapter<ProductModel,Rec
         holder.deleteItem.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                actionListener.onViewClicked(v.getId(),position);
+                actionListener.onViewClicked(v.getId(),position,model.getItemKey());
                 if(position!=RecyclerView.NO_POSITION&&position<=getItemCount()-1){
                     showAlert(getSnapshots().getSnapshot(position).getValue(ProductModel.class));
                 }
@@ -100,7 +100,7 @@ public class RecentItemsAdapter extends FirebaseRecyclerAdapter<ProductModel,Rec
                 .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
                         StorageReference imageRef=storage.getReferenceFromUrl(productModel.getProductImage());
-                        final String key=productModel.getKey();
+                        final String key=productModel.getItemKey();
                         imageRef.delete().addOnSuccessListener(new OnSuccessListener<Void>() {
                             @Override
                             public void onSuccess(Void aVoid) {

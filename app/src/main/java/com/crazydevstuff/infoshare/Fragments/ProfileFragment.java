@@ -148,11 +148,6 @@ public class ProfileFragment extends Fragment implements ItemsAdapterActionListe
     }
 
 
-    @Override
-    public void onViewClicked(int clickedViewId, int clickedItemPosition) {
-        if(clickedViewId == R.id.delete_yourItemIV){
-        }
-    }
 
 
 
@@ -202,6 +197,12 @@ public class ProfileFragment extends Fragment implements ItemsAdapterActionListe
             });
         }
     }
+
+    @Override
+    public void onViewClicked(int clickedViewId, int clickedItemPosition, String itemKey) {
+
+    }
+
     @Override
     public void onViewLongClicked(int clickedViewId, int clickedItemPosition) {
 

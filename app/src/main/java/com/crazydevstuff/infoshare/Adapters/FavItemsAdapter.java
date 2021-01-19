@@ -42,12 +42,6 @@ public class FavItemsAdapter extends RecyclerView.Adapter<FavItemsAdapter.FavVie
     public FavViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.fav_fragment_item_layout,parent,false);
         final FavViewHolder mholder = new FavViewHolder(view);
-        mholder.deleteItem.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mListener.onViewClicked(v.getId(),mholder.getAdapterPosition());
-            }
-        });
         return mholder;
     }
 
@@ -74,6 +68,14 @@ public class FavItemsAdapter extends RecyclerView.Adapter<FavItemsAdapter.FavVie
         });
 
         Picasso.get().load(favItemsList.get(position).getProductImage()).fit().centerInside().into(holder.item);
+
+
+        holder.deleteItem.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mListener.onViewClicked(v.getId(),position,favItemsList.get(position).getItemKey());
+            }
+        });
     }
 
     @Override

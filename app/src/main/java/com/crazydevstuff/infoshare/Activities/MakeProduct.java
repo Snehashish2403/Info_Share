@@ -123,8 +123,8 @@ public class MakeProduct extends AppCompatActivity {
                                     String price=itemPrice.getText().toString();
                                     String name=itemName.getText().toString();
                                     String email = firebaseAuth.getCurrentUser().getEmail();
-                                    ProductModel product=new ProductModel(name,description,imageURL,username,Integer.parseInt(price),email);
-                                    product.setKey(uploadId);
+                                    ProductModel product=new ProductModel(name,description,imageURL,username,Integer.parseInt(price),email,false);
+                                    product.setItemKey(uploadId);
                                     databaseReference.child(uploadId).setValue(product);
                                     finish();
                                 }

@@ -8,6 +8,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.crazydevstuff.infoshare.Interfaces.ItemsAdapterActionListener;
@@ -18,7 +19,9 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.MutableData;
 import com.google.firebase.database.Query;
+import com.google.firebase.database.Transaction;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.squareup.picasso.Picasso;
@@ -26,7 +29,8 @@ import com.squareup.picasso.Picasso;
 import java.util.ArrayList;
 import java.util.List;
 
-public class HomeProductsAdapter extends RecyclerView.Adapter<HomeProductsAdapter.ViewHolder> {
+public class HomeProductsAdapter extends RecyclerView.Adapter<HomeProductsAdapter.ViewHolder>{
+    private DatabaseReference reference;
     private List<ProductModel> productModelList=new ArrayList<>();
     private ItemsAdapterActionListener itemsAdapterActionListener;
     @NonNull
@@ -65,13 +69,41 @@ public class HomeProductsAdapter extends RecyclerView.Adapter<HomeProductsAdapte
         holder.addToFav.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                itemsAdapterActionListener.onViewClicked(v.getId(),position);
+                itemsAdapterActionListener.onViewClicked(v.getId(),position,productModelList.get(position).getItemKey());
+                String s = productModelList.get(position).getProductImage();
+                String key = s.substring(85,105);
+                System.out.println(key);
+                updateFavOption(key);
             }
         });
         Picasso.get().load(productModelList.get(position).getProductImage())
                 .fit()
                 .centerInside()
-                .into(holder.item);    }
+                .into(holder.item);
+
+    }
+
+    private void updateFavOption(String itemKey) {
+        reference = FirebaseDatabase.getInstance().getReference().child("uploads").child(itemKey).child("favourite");
+        reference.runTransaction(new Transaction.Handler() {
+            @NonNull
+            @Override
+            public Transaction.Result doTransaction(@NonNull MutableData currentData) {
+                Boolean fav = currentData.getValue(Boolean.class);
+                if(fav){
+                    currentData.setValue(false);
+                }else{
+                    currentData.setValue(true);
+                }
+                return Transaction.success(currentData);
+            }
+
+            @Override
+            public void onComplete(@Nullable DatabaseError error, boolean committed, @Nullable DataSnapshot currentData) {
+
+            }
+        });
+    }
 
     @Override
     public int getItemCount() {

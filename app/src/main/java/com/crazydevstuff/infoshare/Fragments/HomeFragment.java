@@ -18,7 +18,6 @@ import android.widget.Toast;
 
 import com.crazydevstuff.infoshare.Activities.MainActivity;
 import com.crazydevstuff.infoshare.Activities.MakeProduct;
-import com.crazydevstuff.infoshare.Adapters.FavItemsAdapter;
 import com.crazydevstuff.infoshare.Adapters.HomeProductsAdapter;
 import com.crazydevstuff.infoshare.Interfaces.ItemsAdapterActionListener;
 import com.crazydevstuff.infoshare.Models.ProductModel;
@@ -109,9 +108,9 @@ public class HomeFragment extends Fragment implements ItemsAdapterActionListener
 
 
     @Override
-    public void onViewClicked(int clickedViewId, int clickedItemPosition) {
-        if(clickedViewId == R.id.prod_addToFavIV)
-            Toast.makeText(getContext(), "Add to Fav!", Toast.LENGTH_SHORT).show();
+    public void onViewClicked(int clickedViewId, int clickedItemPosition, String itemKey) {
+
+
     }
 
     @Override
