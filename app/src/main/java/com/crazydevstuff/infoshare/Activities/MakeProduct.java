@@ -118,8 +118,9 @@ public class MakeProduct extends AppCompatActivity {
                                 public void onSuccess(Uri uri) {
                                     Uri downloadUri=uri;
                                     String username=tempIntent.getStringExtra("username");
+                                    String prof_img=tempIntent.getStringExtra("prof_pic");
                                     String imageURL=downloadUri.toString();
-                                    String seller="https://srmrc.nihr.ac.uk/wp-content/uploads/female-placeholder.jpg";
+                                    String seller=prof_img;
                                     String description=itemDescription.getText().toString();
                                     String price=itemPrice.getText().toString();
                                     String name=itemName.getText().toString();

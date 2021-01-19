@@ -35,6 +35,7 @@ public class HomeProductsAdapter extends RecyclerView.Adapter<HomeProductsAdapte
         holder.sellerName.setText(productModelList.get(position).getSellerName());
         Picasso.get().load(productModelList.get(position).getSellerImage())
                 .fit()
+                .placeholder(R.drawable.placeholder)
                 .centerInside()
                 .into(holder.sellerImage);
         Picasso.get().load(productModelList.get(position).getProductImage())

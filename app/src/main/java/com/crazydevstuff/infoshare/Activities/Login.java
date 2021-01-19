@@ -93,7 +93,7 @@ public class Login extends AppCompatActivity {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 RegisterModel currentUser=snapshot.child(userId).getValue(RegisterModel.class);
-                launchMainActivity(currentUser.getEmail(),currentUser.getName());
+                launchMainActivity(currentUser.getEmail(),currentUser.getName(),currentUser.getProf_pic());
             }
 
             @Override
@@ -106,10 +106,12 @@ public class Login extends AppCompatActivity {
         startActivity(new Intent(Login.this, SignUp.class));
         finish();
     }
-    public void launchMainActivity(String email,String passw){
+    public void launchMainActivity(String email,String user,String prof_img){
         Intent intent =new Intent(this,MainActivity.class);
         intent.putExtra("email",email);
-        intent.putExtra("username",passw);
+        intent.putExtra("username",user);
+        intent.putExtra("prof_pic",prof_img);
+        System.out.println("TEST: "+prof_img);
         finish();
         startActivity(intent);
     }

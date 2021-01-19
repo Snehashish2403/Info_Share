@@ -100,8 +100,10 @@ public class HomeFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 String username=MainActivity.username;
+                String prof_img=MainActivity.prof_img;
                 Intent intent=new Intent(getContext(),MakeProduct.class);
                 intent.putExtra("username",username);
+                intent.putExtra("prof_pic",prof_img);
                 startActivity(intent);
 
             }

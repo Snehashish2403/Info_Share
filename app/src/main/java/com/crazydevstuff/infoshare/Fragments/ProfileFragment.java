@@ -1,6 +1,7 @@
 package com.crazydevstuff.infoshare.Fragments;
 
 import android.app.AlertDialog;
+import android.content.ContentResolver;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -18,6 +19,7 @@ import android.provider.MediaStore;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.webkit.MimeTypeMap;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -31,6 +33,9 @@ import com.crazydevstuff.infoshare.Models.ProductModel;
 import com.crazydevstuff.infoshare.R;
 import com.firebase.ui.database.FirebaseRecyclerOptions;
 import com.firebase.ui.database.ObservableSnapshotArray;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -38,6 +43,10 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.StorageTask;
+import com.google.firebase.storage.UploadTask;
 import com.squareup.picasso.Picasso;
 
 import java.io.IOException;
@@ -56,12 +65,12 @@ public class ProfileFragment extends Fragment implements RecentItemsAdapterActio
     private FirebaseAuth firebaseAuth;
     private Button logOutButton;
     private Uri filePath;
-    private DatabaseReference reference;
+    private DatabaseReference dbReference;
+    private StorageReference storageReference;
+    private StorageTask task;
     private RecyclerView productsRecyclerView;
     private RecentItemsAdapter recentItemsAdapter;
-    private ValueEventListener listener;
     private FirebaseRecyclerOptions<ProductModel> options;
-    private List<ProductModel> fetchedProducts=new ArrayList<>();
 
     public ProfileFragment() {
         // Required empty public constructor
@@ -77,7 +86,8 @@ public class ProfileFragment extends Fragment implements RecentItemsAdapterActio
         profileNameTV = v.findViewById(R.id.user_profileNameTV);
         profileNumberTV = v.findViewById(R.id.user_profileNumberTV);
         logOutButton = v.findViewById(R.id.logOutButton);
-        reference = FirebaseDatabase.getInstance().getReference();
+        dbReference = FirebaseDatabase.getInstance().getReference("users-list");
+        storageReference= FirebaseStorage.getInstance().getReference("profilePics");
         productsRecyclerView = v.findViewById(R.id.yourItemsRV);
         changePic = v.findViewById(R.id.chaneProfilePicIV);
         firebaseAuth = FirebaseAuth.getInstance();
@@ -106,11 +116,22 @@ public class ProfileFragment extends Fragment implements RecentItemsAdapterActio
         getActivity().finish();
     }
     private void setInfo(){
-        String item="https://srmrc.nihr.ac.uk/wp-content/uploads/female-placeholder.jpg";
-        Picasso.get().load(item)
-                .fit()
-                .centerInside()
-                .into(profileImageIV);
+        dbReference.child(firebaseAuth.getUid()).child("prof_pic").addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                String profPic=snapshot.getValue(String.class);
+                Picasso.get().load(profPic)
+                        .fit()
+                        .placeholder(R.drawable.placeholder)
+                        .centerInside()
+                        .into(profileImageIV);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
         profileEmailTV.setText(firebaseAuth.getCurrentUser().getEmail());
         profileNameTV.setText(MainActivity.username);
     }
@@ -133,23 +154,6 @@ public class ProfileFragment extends Fragment implements RecentItemsAdapterActio
     public void onStart() {
         super.onStart();
         recentItemsAdapter.startListening();
-        Query query1=FirebaseDatabase.getInstance().getReference().child("uploads").orderByChild("sellerEmail").equalTo(firebaseAuth.getCurrentUser().getEmail());
-        listener=query1.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                fetchedProducts.clear();
-                for(DataSnapshot dataSnapshot:snapshot.getChildren()){
-                    ProductModel currentProduct=dataSnapshot.getValue(ProductModel.class);
-                    fetchedProducts.add(currentProduct);
-                }
-                System.out.println("SIZE: "+fetchedProducts.size());
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-
-            }
-        });
     }
 
     @Override
@@ -168,8 +172,7 @@ public class ProfileFragment extends Fragment implements RecentItemsAdapterActio
 
 
     private void updateProfilePic(){
-        Intent galleryIntent = new Intent(Intent.ACTION_PICK,
-                MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+        Intent galleryIntent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
         galleryIntent.setType("image/*");
         startActivityForResult(galleryIntent, 1);
     }
@@ -182,25 +185,38 @@ public class ProfileFragment extends Fragment implements RecentItemsAdapterActio
                 resultCode,
                 data);
         if (requestCode == 1
-                && resultCode == 0
+                && resultCode == -1
                 && data != null
                 && data.getData() != null) {
             filePath = data.getData();
-            try {
-                Bitmap bitmap = MediaStore
-                        .Images
-                        .Media
-                        .getBitmap(getActivity().getContentResolver(),
-                                filePath);
-                profileImageIV.setImageBitmap(bitmap);
-            }
-
-            catch (IOException e) {
-                e.printStackTrace();
-            }
+            profileImageIV.setVisibility(View.VISIBLE);
+        }
+        setPicture(filePath);
+    }
+    private void setPicture(Uri uri){
+        if(uri!=null){
+            String userUid=firebaseAuth.getUid();
+            final StorageReference reference=storageReference.child(userUid+".jpg");
+            reference.delete();
+            task=reference.putFile(uri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                @Override
+                public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                    reference.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                        @Override
+                        public void onSuccess(Uri uri) {
+                            dbReference.child(firebaseAuth.getUid()).child("prof_pic").setValue(uri.toString());
+                            Toast.makeText(getContext(),"Upload successful!",Toast.LENGTH_SHORT).show();
+                        }
+                    });
+                }
+            }).addOnFailureListener(new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull Exception e) {
+                    Toast.makeText(getContext(),"Upload failed!",Toast.LENGTH_SHORT).show();
+                }
+            });
         }
     }
-
     @Override
     public void onViewLongClicked(int clickedViewId, int clickedItemPosition) {
 

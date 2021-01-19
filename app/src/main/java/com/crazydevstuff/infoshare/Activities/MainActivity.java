@@ -36,6 +36,7 @@ public class MainActivity extends AppCompatActivity {
 
 
     public static String username;
+    public static String prof_img;
     private ChipNavigationBar navigationBar ;
     private Fragment fragment;
     private FrameLayout container;
@@ -47,6 +48,8 @@ public class MainActivity extends AppCompatActivity {
         container = findViewById(R.id.container);
         Intent intent=getIntent();
         username=intent.getStringExtra("username");
+        prof_img=intent.getStringExtra("prof_pic");
+        System.out.println("TEST: "+prof_img);
         navigationBar.setOnItemSelectedListener(new ChipNavigationBar.OnItemSelectedListener() {
             @Override
             public void onItemSelected(int i) {

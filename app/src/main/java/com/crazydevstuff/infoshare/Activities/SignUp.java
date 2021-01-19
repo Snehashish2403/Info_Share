@@ -23,7 +23,7 @@ import com.google.firebase.database.FirebaseDatabase;
 
 public class SignUp extends AppCompatActivity {
 
-    EditText email,password,confirmPass,username;
+    EditText email,password,confirmPass,username,phNo;
     Button signUpButton;
 
     private FirebaseAuth firebaseAuth;
@@ -39,6 +39,7 @@ public class SignUp extends AppCompatActivity {
         password=findViewById(R.id.editTextTextPassword);
         confirmPass=findViewById(R.id.editTextTextConfirmPassword);
         username=findViewById(R.id.editTextTextUsername);
+        phNo=findViewById(R.id.editTextTextUserPhone);
 
         firebaseAuth=FirebaseAuth.getInstance();
         databaseReference=FirebaseDatabase.getInstance().getReference().child("users-list");
@@ -61,14 +62,16 @@ public class SignUp extends AppCompatActivity {
         String pass=password.getText().toString();
         String confirmPassword=confirmPass.getText().toString();
         String user=username.getText().toString();
+        String phNumber=phNo.getText().toString();
 
         if(!emailId.equals("")&&
         !pass.equals("")&&
         !confirmPassword.equals("")&&
-        !user.equals("")){
+        !user.equals("")&&
+        !phNumber.equals("")){
             if(emailId.contains("@")){
                 if(pass.equals(confirmPassword)&&pass.length()>8){
-                    final RegisterModel userObj=new RegisterModel(user,emailId);
+                    final RegisterModel userObj=new RegisterModel(user,emailId,phNumber);
                     firebaseAuth.createUserWithEmailAndPassword(emailId,pass).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                         @Override
                         public void onComplete(@NonNull Task<AuthResult> task) {
@@ -80,7 +83,7 @@ public class SignUp extends AppCompatActivity {
                                 finish();
                                 startActivity(intent);
                             }else{
-                                Toast.makeText(getApplicationContext(),"An unexpected error occured! Please try again",Toast.LENGTH_LONG).show();
+                                Toast.makeText(getApplicationContext(),"An unexpected error occurred! Please try again",Toast.LENGTH_LONG).show();
                             }
                         }
                     });
