@@ -11,7 +11,15 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.crazydevstuff.infoshare.Models.ProductModel;
+import com.crazydevstuff.infoshare.Models.RegisterModel;
 import com.crazydevstuff.infoshare.R;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
+import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.storage.FirebaseStorage;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -19,7 +27,6 @@ import java.util.List;
 
 public class HomeProductsAdapter extends RecyclerView.Adapter<HomeProductsAdapter.ViewHolder> {
     private List<ProductModel> productModelList=new ArrayList<>();
-
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -28,16 +35,30 @@ public class HomeProductsAdapter extends RecyclerView.Adapter<HomeProductsAdapte
     }
 
     @Override
-    public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull final ViewHolder holder, final int position) {
         holder.price.setText("₹"+productModelList.get(position).getProductPrice().toString());
         holder.productDesc.setText(productModelList.get(position).getProductDescription());
         holder.productName.setText(productModelList.get(position).getProductName());
         holder.sellerName.setText(productModelList.get(position).getSellerName());
-        Picasso.get().load(productModelList.get(position).getSellerImage())
-                .fit()
-                .placeholder(R.drawable.placeholder)
-                .centerInside()
-                .into(holder.sellerImage);
+        Query query=FirebaseDatabase.getInstance().getReference("users-list").orderByChild("email").equalTo(productModelList.get(position).getSellerEmail());
+        query.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                for(DataSnapshot dataSnapshot:snapshot.getChildren()){
+                    Picasso.get().load(dataSnapshot.getValue(RegisterModel.class).getProf_pic())
+                            .fit()
+                            .placeholder(R.drawable.placeholder)
+                            .centerInside()
+                            .into(holder.sellerImage);
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+
         Picasso.get().load(productModelList.get(position).getProductImage())
                 .fit()
                 .centerInside()

@@ -18,7 +18,6 @@ public class ProductModel {
 
     private Integer productPrice;
 
-    private String sellerImage;
 
     private String sellerEmail;
 
@@ -29,13 +28,12 @@ public class ProductModel {
 
     }
 
-    public ProductModel(String productName, String productDescription, String productImage, String sellerName,Integer productPrice, String sellerImage,String sellerEmail) {
+    public ProductModel(String productName, String productDescription, String productImage, String sellerName,Integer productPrice,String sellerEmail) {
         this.productName = productName;
         this.productDescription = productDescription;
         this.productPrice = productPrice;
         this.productImage = productImage;
         this.sellerName = sellerName;
-        this.sellerImage = sellerImage;
         this.sellerEmail = sellerEmail;
     }
 
@@ -49,10 +47,6 @@ public class ProductModel {
 
     public int getId(){
         return id;
-    }
-
-    public String getSellerImage() {
-        return sellerImage;
     }
 
     public String getProductName() {
@@ -99,9 +93,6 @@ public class ProductModel {
         this.productPrice = productPrice;
     }
 
-    public void setSellerImage(String sellerImage) {
-        this.sellerImage = sellerImage;
-    }
 
     public String getKey() {
         return key;

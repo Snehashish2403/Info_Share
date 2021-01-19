@@ -21,8 +21,13 @@ import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.firebase.ui.database.FirebaseRecyclerOptions;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
+import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.squareup.picasso.Picasso;
@@ -37,8 +42,10 @@ public class RecentItemsAdapter extends FirebaseRecyclerAdapter<ProductModel,Rec
     private DatabaseReference databaseReference;
     private AlertDialog.Builder builder;
     private Context context;
+    private FirebaseAuth auth;
     public RecentItemsAdapter(@NonNull FirebaseRecyclerOptions<ProductModel> options, RecentItemsAdapterActionListener actionListener,Context context) {
         super(options);
+        auth=FirebaseAuth.getInstance();
         databaseReference= FirebaseDatabase.getInstance().getReference("uploads");
         storage=FirebaseStorage.getInstance();
         this.actionListener = actionListener;
@@ -46,7 +53,7 @@ public class RecentItemsAdapter extends FirebaseRecyclerAdapter<ProductModel,Rec
     }
 
     @Override
-    protected void onBindViewHolder(@NonNull Holder holder, final int position, @NonNull ProductModel model) {
+    protected void onBindViewHolder(@NonNull final Holder holder, final int position, @NonNull final ProductModel model) {
         holder.price.setText("₹"+model.getProductPrice().toString());
         holder.productDesc.setText(model.getProductDescription());
         holder.productName.setText(model.getProductName());
@@ -60,12 +67,24 @@ public class RecentItemsAdapter extends FirebaseRecyclerAdapter<ProductModel,Rec
                 }
             }
         });
+        DatabaseReference reference=FirebaseDatabase.getInstance().getReference("users-list").child(auth.getUid());
+        reference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                String url =snapshot.child("prof_pic").getValue(String.class);
+                Picasso.get().load(url)
+                        .fit()
+                        .centerInside()
+                        .placeholder(R.drawable.placeholder)
+                        .into(holder.sellerImage);
+            }
 
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
 
-        Picasso.get().load(model.getSellerImage())
-                .fit()
-                .centerInside()
-                .into(holder.sellerImage);
+            }
+        });
+
         Picasso.get().load(model.getProductImage())
                 .fit()
                 .centerInside()

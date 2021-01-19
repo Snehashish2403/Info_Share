@@ -118,14 +118,12 @@ public class MakeProduct extends AppCompatActivity {
                                 public void onSuccess(Uri uri) {
                                     Uri downloadUri=uri;
                                     String username=tempIntent.getStringExtra("username");
-                                    String prof_img=tempIntent.getStringExtra("prof_pic");
                                     String imageURL=downloadUri.toString();
-                                    String seller=prof_img;
                                     String description=itemDescription.getText().toString();
                                     String price=itemPrice.getText().toString();
                                     String name=itemName.getText().toString();
                                     String email = firebaseAuth.getCurrentUser().getEmail();
-                                    ProductModel product=new ProductModel(name,description,imageURL,username,Integer.parseInt(price),seller,email);
+                                    ProductModel product=new ProductModel(name,description,imageURL,username,Integer.parseInt(price),email);
                                     product.setKey(uploadId);
                                     databaseReference.child(uploadId).setValue(product);
                                     finish();
