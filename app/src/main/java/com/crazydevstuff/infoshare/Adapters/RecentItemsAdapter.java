@@ -1,3 +1,4 @@
+
 package com.crazydevstuff.infoshare.Adapters;
 
 
@@ -14,7 +15,8 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.crazydevstuff.infoshare.Interfaces.RecentItemsAdapterActionListener;
+import com.crazydevstuff.infoshare.Interfaces.ItemsAdapterActionListener;
+import com.crazydevstuff.infoshare.Interfaces.ItemsAdapterActionListener;
 import com.crazydevstuff.infoshare.Models.ProductModel;
 import com.crazydevstuff.infoshare.R;
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
@@ -37,13 +39,13 @@ import java.util.List;
 
 
 public class RecentItemsAdapter extends FirebaseRecyclerAdapter<ProductModel,RecentItemsAdapter.Holder> {
-    private RecentItemsAdapterActionListener actionListener;
+    private ItemsAdapterActionListener actionListener;
     private FirebaseStorage storage;
     private DatabaseReference databaseReference;
     private AlertDialog.Builder builder;
     private Context context;
     private FirebaseAuth auth;
-    public RecentItemsAdapter(@NonNull FirebaseRecyclerOptions<ProductModel> options, RecentItemsAdapterActionListener actionListener,Context context) {
+    public RecentItemsAdapter(@NonNull FirebaseRecyclerOptions<ProductModel> options, ItemsAdapterActionListener actionListener,Context context) {
         super(options);
         auth=FirebaseAuth.getInstance();
         databaseReference= FirebaseDatabase.getInstance().getReference("uploads");

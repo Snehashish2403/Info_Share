@@ -1,25 +1,18 @@
 package com.crazydevstuff.infoshare.Fragments;
 
-import android.app.AlertDialog;
-import android.content.ContentResolver;
-import android.content.DialogInterface;
 import android.content.Intent;
-import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.LiveData;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.provider.ContactsContract;
 import android.provider.MediaStore;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.webkit.MimeTypeMap;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -28,14 +21,12 @@ import android.widget.Toast;
 import com.crazydevstuff.infoshare.Activities.Login;
 import com.crazydevstuff.infoshare.Activities.MainActivity;
 import com.crazydevstuff.infoshare.Adapters.RecentItemsAdapter;
-import com.crazydevstuff.infoshare.Interfaces.RecentItemsAdapterActionListener;
+import com.crazydevstuff.infoshare.Interfaces.ItemsAdapterActionListener;
 import com.crazydevstuff.infoshare.Models.ProductModel;
 import com.crazydevstuff.infoshare.R;
 import com.firebase.ui.database.FirebaseRecyclerOptions;
-import com.firebase.ui.database.ObservableSnapshotArray;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -49,15 +40,9 @@ import com.google.firebase.storage.StorageTask;
 import com.google.firebase.storage.UploadTask;
 import com.squareup.picasso.Picasso;
 
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-
 import de.hdodenhof.circleimageview.CircleImageView;
 
-import static androidx.media.MediaBrowserServiceCompat.RESULT_OK;
-
-public class ProfileFragment extends Fragment implements RecentItemsAdapterActionListener {
+public class ProfileFragment extends Fragment implements ItemsAdapterActionListener {
 
     private TextView profileNameTV, profileNumberTV, profileEmailTV;
     private CircleImageView profileImageIV;

@@ -1,10 +1,6 @@
 package com.crazydevstuff.infoshare.Fragments;
 
-import android.app.Application;
-import android.content.Context;
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -15,17 +11,16 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.os.Handler;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.ImageView;
-import android.widget.RelativeLayout;
+import android.widget.Toast;
 
 import com.crazydevstuff.infoshare.Activities.MainActivity;
 import com.crazydevstuff.infoshare.Activities.MakeProduct;
+import com.crazydevstuff.infoshare.Adapters.FavItemsAdapter;
 import com.crazydevstuff.infoshare.Adapters.HomeProductsAdapter;
+import com.crazydevstuff.infoshare.Interfaces.ItemsAdapterActionListener;
 import com.crazydevstuff.infoshare.Models.ProductModel;
 import com.crazydevstuff.infoshare.R;
 import com.crazydevstuff.infoshare.ViewModel.ProductViewModel;
@@ -39,7 +34,7 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
 import java.util.List;
 
-public class HomeFragment extends Fragment {
+public class HomeFragment extends Fragment implements ItemsAdapterActionListener {
 
     private RecyclerView productsRecyclerView;
     private HomeProductsAdapter productsAdapter;
@@ -65,6 +60,7 @@ public class HomeFragment extends Fragment {
         fab = v.findViewById(R.id.fab);
         databaseReference= FirebaseDatabase.getInstance().getReference("uploads");
         productsAdapter = new HomeProductsAdapter();
+        productsAdapter.setFavItemsListener(this);
         productViewModel=new ViewModelProvider.AndroidViewModelFactory(getActivity().getApplication()).create(ProductViewModel.class);
         databaseListener=databaseReference.addValueEventListener(new ValueEventListener() {
             @Override
@@ -112,5 +108,14 @@ public class HomeFragment extends Fragment {
     }
 
 
+    @Override
+    public void onViewClicked(int clickedViewId, int clickedItemPosition) {
+        if(clickedViewId == R.id.prod_addToFavIV)
+            Toast.makeText(getContext(), "Add to Fav!", Toast.LENGTH_SHORT).show();
+    }
 
+    @Override
+    public void onViewLongClicked(int clickedViewId, int clickedItemPosition) {
+
+    }
 }

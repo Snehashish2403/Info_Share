@@ -10,6 +10,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.crazydevstuff.infoshare.Interfaces.ItemsAdapterActionListener;
 import com.crazydevstuff.infoshare.Models.ProductModel;
 import com.crazydevstuff.infoshare.Models.RegisterModel;
 import com.crazydevstuff.infoshare.R;
@@ -27,11 +28,13 @@ import java.util.List;
 
 public class HomeProductsAdapter extends RecyclerView.Adapter<HomeProductsAdapter.ViewHolder> {
     private List<ProductModel> productModelList=new ArrayList<>();
+    private ItemsAdapterActionListener itemsAdapterActionListener;
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.home_product_layout,parent,false);
-        return new ViewHolder(view);
+        final ViewHolder mHolder = new ViewHolder(view);
+        return mHolder;
     }
 
     @Override
@@ -59,6 +62,12 @@ public class HomeProductsAdapter extends RecyclerView.Adapter<HomeProductsAdapte
             }
         });
 
+        holder.addToFav.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                itemsAdapterActionListener.onViewClicked(v.getId(),position);
+            }
+        });
         Picasso.get().load(productModelList.get(position).getProductImage())
                 .fit()
                 .centerInside()
@@ -73,6 +82,10 @@ public class HomeProductsAdapter extends RecyclerView.Adapter<HomeProductsAdapte
         this.productModelList=list;
         notifyDataSetChanged();
     }
+
+    public void setFavItemsListener(ItemsAdapterActionListener itemsAdapterActionListener){
+        this.itemsAdapterActionListener = itemsAdapterActionListener;
+    }
     public class ViewHolder extends RecyclerView.ViewHolder{
         ImageView sellerImage;
         TextView sellerName;
@@ -80,6 +93,7 @@ public class HomeProductsAdapter extends RecyclerView.Adapter<HomeProductsAdapte
         TextView productName;
         TextView productDesc;
         TextView price;
+        ImageView addToFav;
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             sellerImage = itemView.findViewById(R.id.prod_sellerIV);
@@ -88,6 +102,7 @@ public class HomeProductsAdapter extends RecyclerView.Adapter<HomeProductsAdapte
             productName = itemView.findViewById(R.id.prod_nameTV);
             productDesc = itemView.findViewById(R.id.prod_descrpTv);
             price = itemView.findViewById(R.id.prod_priceTV);
+            addToFav = itemView.findViewById(R.id.prod_addToFavIV);
 
         }
     }
