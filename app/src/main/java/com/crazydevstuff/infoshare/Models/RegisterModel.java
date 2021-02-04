@@ -5,7 +5,6 @@ public class RegisterModel {
     private String email;
     private String phoneNumber;
     private String prof_pic;
-
     public RegisterModel(){
 
     }
@@ -47,4 +46,5 @@ public class RegisterModel {
     public void setProf_pic(String prof_pic) {
         this.prof_pic = prof_pic;
     }
+
 }

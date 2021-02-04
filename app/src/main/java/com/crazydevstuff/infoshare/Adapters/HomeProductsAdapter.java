@@ -15,6 +15,7 @@ import com.crazydevstuff.infoshare.Interfaces.ItemsAdapterActionListener;
 import com.crazydevstuff.infoshare.Models.ProductModel;
 import com.crazydevstuff.infoshare.Models.RegisterModel;
 import com.crazydevstuff.infoshare.R;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -31,6 +32,7 @@ import java.util.List;
 
 public class HomeProductsAdapter extends RecyclerView.Adapter<HomeProductsAdapter.ViewHolder>{
     private DatabaseReference reference;
+    private FirebaseAuth auth;
     private List<ProductModel> productModelList=new ArrayList<>();
     private ItemsAdapterActionListener itemsAdapterActionListener;
     @NonNull
@@ -83,26 +85,21 @@ public class HomeProductsAdapter extends RecyclerView.Adapter<HomeProductsAdapte
 
     }
 
-    private void updateFavOption(String itemKey) {
-        reference = FirebaseDatabase.getInstance().getReference().child("uploads").child(itemKey).child("favourite");
-        reference.runTransaction(new Transaction.Handler() {
-            @NonNull
+    private void updateFavOption(final String itemKey) {
+        auth = FirebaseAuth.getInstance();
+        reference = FirebaseDatabase.getInstance().getReference().child("favourite_items");
+        reference.child(auth.getCurrentUser().getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
-            public Transaction.Result doTransaction(@NonNull MutableData currentData) {
-                Boolean fav = currentData.getValue(Boolean.class);
-                if(fav){
-                    currentData.setValue(false);
-                }else{
-                    currentData.setValue(true);
-                }
-                return Transaction.success(currentData);
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                snapshot.child(itemKey).getRef().setValue(itemKey);
             }
 
             @Override
-            public void onComplete(@Nullable DatabaseError error, boolean committed, @Nullable DataSnapshot currentData) {
+            public void onCancelled(@NonNull DatabaseError error) {
 
             }
         });
+
     }
 
     @Override

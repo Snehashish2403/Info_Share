@@ -98,7 +98,7 @@ public class Login extends AppCompatActivity {
 
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
-
+                Toast.makeText(Login.this, "An unexpected error occurred", Toast.LENGTH_SHORT).show();
             }
         });
     }
@@ -116,7 +116,7 @@ public class Login extends AppCompatActivity {
         startActivity(intent);
     }
 
-    @Override
+   /* @Override
     protected void onStart() {
         super.onStart();
         firebaseuser=FirebaseAuth.getInstance().getCurrentUser();
@@ -124,5 +124,5 @@ public class Login extends AppCompatActivity {
             Toast.makeText(getApplicationContext(),"Please wait logging you in",Toast.LENGTH_LONG).show();
             searchUser(firebaseuser.getUid());
         }
-    }
+    }*/
 }

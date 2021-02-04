@@ -18,8 +18,6 @@ public class ProductModel {
 
     private Integer productPrice;
 
-    private Boolean isFavourite;
-
     private String sellerEmail;
 
     @Ignore
@@ -29,14 +27,13 @@ public class ProductModel {
 
     }
 
-    public ProductModel(String productName, String productDescription, String productImage, String sellerName,Integer productPrice,String sellerEmail, Boolean isFavourite) {
+    public ProductModel(String productName, String productDescription, String productImage, String sellerName,Integer productPrice,String sellerEmail) {
         this.productName = productName;
         this.productDescription = productDescription;
         this.productPrice = productPrice;
         this.productImage = productImage;
         this.sellerName = sellerName;
         this.sellerEmail = sellerEmail;
-        this.isFavourite = isFavourite;
     }
 
     public Integer getProductPrice() {
@@ -103,11 +100,4 @@ public class ProductModel {
         this.itemKey = itemKey;
     }
 
-    public Boolean getFavourite() {
-        return isFavourite;
-    }
-
-    public void setFavourite(Boolean favourite) {
-        isFavourite = favourite;
-    }
 }

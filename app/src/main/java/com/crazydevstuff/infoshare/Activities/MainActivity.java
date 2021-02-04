@@ -63,14 +63,16 @@ public class MainActivity extends AppCompatActivity {
                     case R.id.user :
                         fragment = new ProfileFragment();
                         break;
-                    default:
-                        fragment = null;
-                        break;
                 }
+
                 getSupportFragmentManager().beginTransaction().replace(R.id.container,fragment).commit();
             }
         });
-        getSupportFragmentManager().beginTransaction().replace(R.id.container,new HomeFragment()).commit();
     }
 
+    @Override
+    protected void onStart() {
+        super.onStart();
+        getSupportFragmentManager().beginTransaction().replace(R.id.container,new HomeFragment()).commit();
+    }
 }

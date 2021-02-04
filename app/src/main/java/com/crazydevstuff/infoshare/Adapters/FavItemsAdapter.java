@@ -26,15 +26,14 @@ import java.util.List;
 
 public class FavItemsAdapter extends RecyclerView.Adapter<FavItemsAdapter.FavViewHolder> {
     private List<ProductModel> favItemsList = new ArrayList<>();
-    private ItemsAdapterActionListener mListener;
 
     public void setFavItemsList(List<ProductModel> favItemsList) {
         this.favItemsList = favItemsList;
         notifyDataSetChanged();
     }
 
-    public FavItemsAdapter(ItemsAdapterActionListener mListener) {
-        this.mListener = mListener;
+    public FavItemsAdapter( ) {
+
     }
 
     @NonNull
@@ -73,7 +72,7 @@ public class FavItemsAdapter extends RecyclerView.Adapter<FavItemsAdapter.FavVie
         holder.deleteItem.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mListener.onViewClicked(v.getId(),position,favItemsList.get(position).getItemKey());
+
             }
         });
     }
