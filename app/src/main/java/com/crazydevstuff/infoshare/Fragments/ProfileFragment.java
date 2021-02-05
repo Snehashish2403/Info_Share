@@ -107,7 +107,7 @@ public class ProfileFragment extends Fragment implements ItemsAdapterActionListe
                 String profPic=snapshot.getValue(String.class);
                 Picasso.get().load(profPic)
                         .fit()
-                        .placeholder(R.drawable.placeholder)
+                        .placeholder(R.mipmap.placeholder)
                         .centerInside()
                         .into(profileImageIV);
             }
@@ -148,9 +148,6 @@ public class ProfileFragment extends Fragment implements ItemsAdapterActionListe
     }
 
 
-
-
-
     private void updateProfilePic(){
         Intent galleryIntent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
         galleryIntent.setType("image/*");
@@ -170,12 +167,12 @@ public class ProfileFragment extends Fragment implements ItemsAdapterActionListe
                 && data.getData() != null) {
             filePath = data.getData();
             profileImageIV.setVisibility(View.VISIBLE);
+            setPicture(filePath);
         }
-        setPicture(filePath);
     }
     private void setPicture(Uri uri){
         if(uri!=null){
-            String userUid=firebaseAuth.getUid();
+            final String userUid=firebaseAuth.getUid();
             final StorageReference reference=storageReference.child(userUid+".jpg");
             reference.delete();
             task=reference.putFile(uri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
@@ -184,8 +181,7 @@ public class ProfileFragment extends Fragment implements ItemsAdapterActionListe
                     reference.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
                         @Override
                         public void onSuccess(Uri uri) {
-                            dbReference.child(firebaseAuth.getUid()).child("prof_pic").setValue(uri.toString());
-                            Toast.makeText(getContext(),"Upload successful!",Toast.LENGTH_SHORT).show();
+                            dbReference.child(userUid).child("prof_pic").setValue(uri.toString());
                         }
                     });
                 }
